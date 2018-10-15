@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Dart," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="控制流语句你可以使用以下任何一种方式来控制你的Dart代码流：  if 和 else for 循环 while 和 do-while 循环 break 和 continue switch 和 case assert你也可以通过使用try-catch和throw来改变控制流  if 和 elseDart支持If语句以及可选的else语句，教程（四）有涉及过（?:） 1234567if (isRain">
+<meta name="keywords" content="Dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart基础教程（五）">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/08/09/Dart基础教程（五）/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="控制流语句你可以使用以下任何一种方式来控制你的Dart代码流：  if 和 else for 循环 while 和 do-while 循环 break 和 continue switch 和 case assert你也可以通过使用try-catch和throw来改变控制流  if 和 elseDart支持If语句以及可选的else语句，教程（四）有涉及过（?:） 1234567if (isRain">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T13:56:02.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dart基础教程（五）">
+<meta name="twitter:description" content="控制流语句你可以使用以下任何一种方式来控制你的Dart代码流：  if 和 else for 循环 while 和 do-while 循环 break 和 continue switch 和 case assert你也可以通过使用try-catch和throw来改变控制流  if 和 elseDart支持If语句以及可选的else语句，教程（四）有涉及过（?:） 1234567if (isRain">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/08/09/Dart基础教程（五）/"/>
+
+
+
+
+
+  <title>Dart基础教程（五） | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/08/09/Dart基础教程（五）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dart基础教程（五）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T00:00:00+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index">
+                    <span itemprop="name">Dart</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/09/Dart基础教程（五）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/09/Dart基础教程（五）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="控制流语句"><a href="#控制流语句" class="headerlink" title="控制流语句"></a>控制流语句</h4><p>你可以使用以下任何一种方式来控制你的Dart代码流：</p>
+<ul>
+<li>if 和 else</li>
+<li>for 循环</li>
+<li>while 和 do-while 循环</li>
+<li>break 和 continue</li>
+<li>switch 和 case</li>
+<li>assert<br>你也可以通过使用try-catch和throw来改变控制流</li>
+</ul>
+<h6 id="if-和-else"><a href="#if-和-else" class="headerlink" title="if 和 else"></a>if 和 else</h6><p>Dart支持If语句以及可选的else语句，教程（四）有涉及过（?:）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">if (isRaining()) &#123;</span><br><span class="line">  you.bringRainCoat();</span><br><span class="line">&#125; else if (isSnowing()) &#123;</span><br><span class="line">  you.wearJacket();</span><br><span class="line">&#125; else &#123;</span><br><span class="line">  car.putTopDown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>不同于JavaScript的地方是,Dart将所有不为True的值视作False。</p>
+<h6 id="for-循环"><a href="#for-循环" class="headerlink" title="for 循环"></a>for 循环</h6><p>您可以使用循环进行迭代：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var message = StringBuffer(&apos;Dart is fun&apos;);</span><br><span class="line">for (var i = 0; i &lt; 5; i++) &#123;</span><br><span class="line">  message.write(&apos;!&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Dart for循环中的闭包能获取索引的值，避免了JavaScript中常见的坑(我不懂js，有什么坑？)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">var callbacks = [];</span><br><span class="line">for (var i = 0; i &lt; 2; i++) &#123;</span><br><span class="line">  callbacks.add(() =&gt; print(i));</span><br><span class="line">&#125;</span><br><span class="line">callbacks.forEach((c) =&gt; c());</span><br></pre></td></tr></table></figure>
+<p>正如我们所期待的，输出结果分别是0和1。但是在JavaScript中正好相反，输出分别为2和2。<br>如果正在迭代的对象是可迭代的，你可以使用forEach()函数。如果你不需要知道当前遍历的下标，那么使用forEach()是个不错的选择。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">candidates.forEach((candidate) =&gt; candidate.interview());</span><br></pre></td></tr></table></figure>
+<p>可迭代的类如List以及Set也支持for-in形式的 iteration：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var collection = [0, 1, 2];</span><br><span class="line">for (var x in collection) &#123;</span><br><span class="line">  print(x); // 0 1 2</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="While-和-do-while"><a href="#While-和-do-while" class="headerlink" title="While 和 do-while"></a>While 和 do-while</h6><p>while循环首先计算条件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">while (!isDone()) &#123;</span><br><span class="line">  doSomething();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>Do-while循环在循环开始之后才对条件进行求值运算：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">do &#123;</span><br><span class="line">  printLine();</span><br><span class="line">&#125; while (!atEndOfPage());</span><br></pre></td></tr></table></figure>
+<h6 id="Break-和-continue"><a href="#Break-和-continue" class="headerlink" title="Break 和 continue"></a>Break 和 continue</h6><p>用break中断循环：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while (true) &#123;</span><br><span class="line">  if (shutDownRequested()) break;</span><br><span class="line">  processIncomingRequests();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用continue跳出本次循环，直接进入下次循环：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for(int i=0;i&lt;candidates.length;i++)&#123;</span><br><span class="line">    var candidate = candidates[i];</span><br><span class="line">    if(candidate.yearsExperience &lt;s)&#123;</span><br><span class="line">    continue;</span><br><span class="line">    &#125;</span><br><span class="line">    candidate.interview();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>如果你使用的是一个可迭代的列表(List)或集合(Set)，那么你可以用不同的方式编写这个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">candidates</span><br><span class="line">    .where((c) =&gt; c.yearsExperience &gt;= 5)</span><br><span class="line">    .forEach((c) =&gt; c.interview());</span><br></pre></td></tr></table></figure>
+<h6 id="Switch-和-case"><a href="#Switch-和-case" class="headerlink" title="Switch 和 case"></a>Switch 和 case</h6><p>Dart中Switch语句通过使用 == 来比较整型，字符串或者编译时常量。被比较的对象必须都是同一个类（不能是它的任何一个子类型）中的实例，并且这个类不允许覆盖 ==。<br>枚举类型 很适用于在Switch语句。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提示：Dart中的Switch语句是为限制条件而设计的，比如翻译器或者扫描器。</span><br></pre></td></tr></table></figure>
+<p>作为规定，每一个不为空的case分句都以break语句结尾.其他正确的结尾方式也可以使用continue,throw或者return语句来实现。 当没有任何case分句的条件符合时，使用default分句来执行代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">var command = &apos;OPEN&apos;;</span><br><span class="line">switch (command) &#123;</span><br><span class="line">  case &apos;CLOSED&apos;:</span><br><span class="line">    executeClosed();</span><br><span class="line">    break;</span><br><span class="line">  case &apos;PENDING&apos;:</span><br><span class="line">    executePending();</span><br><span class="line">    break;</span><br><span class="line">  case &apos;APPROVED&apos;:</span><br><span class="line">    executeApproved();</span><br><span class="line">    break;</span><br><span class="line">  case &apos;DENIED&apos;:</span><br><span class="line">    executeDenied();</span><br><span class="line">    break;</span><br><span class="line">  case &apos;OPEN&apos;:</span><br><span class="line">    executeOpen();</span><br><span class="line">    break;</span><br><span class="line">  default:</span><br><span class="line">    executeUnknown();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下列的例子漏写了case分句中的break语句，从而产生了一个错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var command = &apos;OPEN&apos;;</span><br><span class="line">switch (command) &#123;</span><br><span class="line">  case &apos;OPEN&apos;:</span><br><span class="line">    executeOpen();</span><br><span class="line">    // ERROR: Missing break</span><br><span class="line"></span><br><span class="line">  case &apos;CLOSED&apos;:</span><br><span class="line">    executeClosed();</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然而,Dart支持空的case分句，并允许使用从一个case到另一个case的贯穿形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var command = &apos;CLOSED&apos;;</span><br><span class="line">switch (command) &#123;</span><br><span class="line">  case &apos;CLOSED&apos;: // Empty case falls through.</span><br><span class="line">  case &apos;NOW_CLOSED&apos;:</span><br><span class="line">    // Runs for both CLOSED and NOW_CLOSED.</span><br><span class="line">    executeNowClosed();</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你真的想用这种贯穿方式，你可以使用continue语句以及一个标签：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">var command = &apos;CLOSED&apos;;</span><br><span class="line">switch (command) &#123;</span><br><span class="line">  case &apos;CLOSED&apos;:</span><br><span class="line">    executeClosed();</span><br><span class="line">    continue nowClosed;</span><br><span class="line">  // 继续在 nowClosed 标记的地方执行.</span><br><span class="line"></span><br><span class="line">  nowClosed:</span><br><span class="line">  case &apos;NOW_CLOSED&apos;:</span><br><span class="line">    // CLOSED 和 NOW_CLOSED两个都会运行.</span><br><span class="line">    executeNowClosed();</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>一个case分句可以含有局部变量，该局部变量仅仅只在此分句范围内可见。</p>
+<h6 id="Assert"><a href="#Assert" class="headerlink" title="Assert"></a>Assert</h6><p>如果一个布尔条件值为false，使用assert语句来中断正常执行的代码。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//确保这个变量不为空值.</span><br><span class="line">   assert(text != null);</span><br><span class="line"></span><br><span class="line">   //确保这个变量小于100.</span><br><span class="line">   assert(number &lt; 100);</span><br><span class="line"></span><br><span class="line">   //确保它是一个https协议类型的URL.</span><br><span class="line">   assert(urlString.startsWith(‘https’));</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">提示：Assert语句仅仅只能在调试模式下使用，在生产模式下没有任何作用。Flutter在调试模式下启用assert。</span><br><span class="line">dartdevc默认支持assert，也有一些工具dart和dart2js通过命令“--enable-asserts”支持assert</span><br></pre></td></tr></table></figure>
+<p>将一条消息附加到断言中，可以将字符串添加为第二个参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">assert(urlString.startsWith(&apos;https&apos;),</span><br><span class="line">    &apos;URL ($urlString) should start with &quot;https&quot;.&apos;);</span><br></pre></td></tr></table></figure>
+<p>断言的第一个参数可以是解析为布尔值的任何表达式，如果表达式的值为true，则断言成功并继续执行，如果它是false，断言失败，抛出一个异常（一个断言错误）</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/09/Dart基础教程（六）/" rel="next" title="Dart基础教程（六）">
+                <i class="fa fa-chevron-left"></i> Dart基础教程（六）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/Dart基础教程（七）/" rel="prev" title="Dart基础教程（七）">
+                Dart基础教程（七） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#控制流语句"><span class="nav-number">1.</span> <span class="nav-text">控制流语句</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#if-和-else"><span class="nav-number">1.0.1.</span> <span class="nav-text">if 和 else</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#for-循环"><span class="nav-number">1.0.2.</span> <span class="nav-text">for 循环</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#While-和-do-while"><span class="nav-number">1.0.3.</span> <span class="nav-text">While 和 do-while</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Break-和-continue"><span class="nav-number">1.0.4.</span> <span class="nav-text">Break 和 continue</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Switch-和-case"><span class="nav-number">1.0.5.</span> <span class="nav-text">Switch 和 case</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Assert"><span class="nav-number">1.0.6.</span> <span class="nav-text">Assert</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Dart," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Functions（函数）Dart是一种真正的面向对象语言，所以即使是函数也是对象，并且具有类型.这意味着函数可以被分配给变量，或者作为参数传递给其他函数这里有一个实现函数的例子: 123bool isNoble(int atomicNumber) &amp;#123;  return _nobleGases[atomicNumber] != null;&amp;#125; 尽管会提示没有type，但是下面这个函">
+<meta name="keywords" content="Dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart基础教程（三）">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/08/06/Dart基础教程（三）/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="Functions（函数）Dart是一种真正的面向对象语言，所以即使是函数也是对象，并且具有类型.这意味着函数可以被分配给变量，或者作为参数传递给其他函数这里有一个实现函数的例子: 123bool isNoble(int atomicNumber) &amp;#123;  return _nobleGases[atomicNumber] != null;&amp;#125; 尽管会提示没有type，但是下面这个函">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T13:56:02.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dart基础教程（三）">
+<meta name="twitter:description" content="Functions（函数）Dart是一种真正的面向对象语言，所以即使是函数也是对象，并且具有类型.这意味着函数可以被分配给变量，或者作为参数传递给其他函数这里有一个实现函数的例子: 123bool isNoble(int atomicNumber) &amp;#123;  return _nobleGases[atomicNumber] != null;&amp;#125; 尽管会提示没有type，但是下面这个函">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/08/06/Dart基础教程（三）/"/>
+
+
+
+
+
+  <title>Dart基础教程（三） | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/08/06/Dart基础教程（三）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dart基础教程（三）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-06T00:00:00+08:00">
+                2018-08-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index">
+                    <span itemprop="name">Dart</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/06/Dart基础教程（三）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/06/Dart基础教程（三）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Functions（函数）"><a href="#Functions（函数）" class="headerlink" title="Functions（函数）"></a>Functions（函数）</h4><p>Dart是一种真正的面向对象语言，所以即使是函数也是对象，并且具有类型.这意味着函数可以被分配给变量，或者作为参数传递给其他函数<br>这里有一个实现函数的例子:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">bool isNoble(int atomicNumber) &#123;</span><br><span class="line">  return _nobleGases[atomicNumber] != null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>尽管会提示没有type，但是下面这个函数还是会起作用:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">isNoble(atomicNumber) &#123;</span><br><span class="line">  return _nobleGases[atomicNumber] != null;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果函数只含有一个表达式，那么你可以这样简写：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">bool isNoble(int atomicNumber) =&gt; _nobleGases[atomicNumber] != null;</span><br></pre></td></tr></table></figure>
+<p>=&gt; expr是{ return expr; }的简写</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：只有一个表达式能够在箭头符（=&gt;）和分号（;）之间出现，语句是不可以这样使用的。比如，你不能把 if 语句放在这两个符号之间，但是一个三元运算符（?:）是可以的。</span><br></pre></td></tr></table></figure>
+<p>一个函数可以有两种类型的参数：必要参数和可选参数。所有的必要参数都应放在可选参数之前，当必要参数已经全部列出时，才能在后面加入可选参数。可选参数也可以被标记为@required</p>
+<h6 id="可选参数"><a href="#可选参数" class="headerlink" title="可选参数"></a>可选参数</h6><p>可选参数可以是可选位置参数或者可选命名参数，但不能既是可选位置参数又是可选命名参数。<br>这两种可选参数都可以定义默认值。但是默认值必须是编译时的常量，比如字面值。如果没有为之提供默认值，那么该参数的默认值将会是 null</p>
+<h6 id="可选命名参数"><a href="#可选命名参数" class="headerlink" title="可选命名参数"></a>可选命名参数</h6><p>在调用函数的时候，你可以通过paraName: Value的形式使用有命名的参数。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enableFlags(bold: true, hidden: false);</span><br></pre></td></tr></table></figure>
+<p>当定义一个函数的时候，使用{param1, param2, …}来声明有命名的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/// 将 bold 和 hidden 作为你声明的参数的值 ...</span><br><span class="line">void enableFlags(&#123;bool bold, bool hidden&#125;) &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<p>Flutter实例创建表达式可能会变得复杂，所以小部件（widget ）构造器只使用命名参数，这使得实例创建表达式更易于阅读<br>我们可以在任何dart代码里用@required来注释一个命名参数来表明其是必需的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const Scrollbar(&#123;Key key, @required Widget child&#125;)</span><br></pre></td></tr></table></figure>
+<p>当Scrollbar创建的时候，如果child参数没有，编译器则会报问题。<br>Required定义在meta包中，我们可以用import导入package:meta/meta.dart，也可以导入其它外部meta，像Flutter的package:flutter/material.dart。</p>
+<h6 id="可选位置参数"><a href="#可选位置参数" class="headerlink" title="可选位置参数"></a>可选位置参数</h6><p>把一组函数的参数放在[]之内可以把它们标记为可选位置参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">String say(String from, String msg, [String device]) &#123;</span><br><span class="line">  var result = &apos;$from says $msg&apos;;</span><br><span class="line">  if (device != null) &#123;</span><br><span class="line">    result = &apos;$result with a $device&apos;;</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>下面是不使用可选参数调用上述方法的一个实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(say(&apos;Bob&apos;, &apos;Howdy&apos;) == &apos;Bob says Howdy&apos;);</span><br></pre></td></tr></table></figure>
+<p>接下来则是使用可选参数调用的实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">assert(say(&apos;Bob&apos;, &apos;Howdy&apos;, &apos;smoke signal&apos;) == </span><br><span class="line">     &apos;Bob says Howdy with a smoke signal&apos;);</span><br></pre></td></tr></table></figure>
+<h6 id="参数默认值"><a href="#参数默认值" class="headerlink" title="参数默认值"></a>参数默认值</h6><p>我们可以用=来给可选命名参数和可选位置参数来设置默认值，默认值必须是编译时常量，如果没有设置默认值，则默认为null<br>下面是给可选命名参数设置默认值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/// Sets the [bold] and [hidden] flags ...</span><br><span class="line">void enableFlags(&#123;bool bold = false, bool hidden = false&#125;) &#123;...&#125;</span><br><span class="line"></span><br><span class="line">// bold will be true; hidden will be false.</span><br><span class="line">enableFlags(bold: true);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：老的代码可能会使用“:”代替“=”来设置默认值，这是因为最开始命名参数只支持“:”。但是那种写法可能会被弃用，还是推荐使用“=”.</span><br></pre></td></tr></table></figure>
+<p>可选位置参数使用=来声明默认值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">String say(String from, String msg,</span><br><span class="line">    [String device = &apos;carrier pigeon&apos;, String mood]) &#123;</span><br><span class="line">  var result = &apos;$from says $msg&apos;;</span><br><span class="line">  if (device != null) &#123;</span><br><span class="line">    result = &apos;$result with a $device&apos;;</span><br><span class="line">  &#125;</span><br><span class="line">  if (mood != null) &#123;</span><br><span class="line">    result = &apos;$result (in a $mood mood)&apos;;</span><br><span class="line">  &#125;</span><br><span class="line">  return result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">assert(say(&apos;Bob&apos;, &apos;Howdy&apos;) ==</span><br><span class="line">    &apos;Bob says Howdy with a carrier pigeon&apos;);</span><br></pre></td></tr></table></figure>
+<p>我们也可以使用lists或maps作为默认值传递<br>下面的例子我们定义了一个函数，doStuff()，然后给list参数设置了默认值为list，gifts参数设置默认值为map</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">void doStuff(</span><br><span class="line">    &#123;List&lt;int&gt; list = const [1, 2, 3],</span><br><span class="line">    Map&lt;String, String&gt; gifts = const &#123;</span><br><span class="line">      &apos;first&apos;: &apos;paper&apos;,</span><br><span class="line">      &apos;second&apos;: &apos;cotton&apos;,</span><br><span class="line">      &apos;third&apos;: &apos;leather&apos;</span><br><span class="line">    &#125;&#125;) &#123;</span><br><span class="line">  print(&apos;list:  $list&apos;);</span><br><span class="line">  print(&apos;gifts: $gifts&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="main函数"><a href="#main函数" class="headerlink" title="main函数"></a>main函数</h6><p>每个函数都必须有一个main()函数，这个函数就是整个应用的入口函数。main()函数返回值类型为void并且有一个可选参数List<string>。<br>下面是一份关于网络应用的main()函数示例：</string></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">void main() &#123;</span><br><span class="line">  querySelector(&apos;#sample_text_id&apos;)</span><br><span class="line">    ..text = &apos;Click me!&apos;</span><br><span class="line">    ..onClick.listen(reverseText);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">提示：代码前的..操作符是级联操作符，用于允许用户在一个对象上实现多个操作</span><br></pre></td></tr></table></figure>
+<p>下面是一个命令行应用的带参数的main()函数示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 这个应用应该在命令行中这样启动: dart args.dart 1 test</span><br><span class="line">void main(List&lt;String&gt; arguments) &#123;</span><br><span class="line">  print(arguments);</span><br><span class="line"></span><br><span class="line">  assert(arguments.length == 2);</span><br><span class="line">  assert(int.parse(arguments[0]) == 1);</span><br><span class="line">  assert(arguments[1] == &apos;test&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>你可以在 args library 上了解如何定义和分析命令行参数。</p>
+<h6 id="作为对象的函数"><a href="#作为对象的函数" class="headerlink" title="作为对象的函数"></a>作为对象的函数</h6><p>你可以把一个函数当做参数传给另一个函数。比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">void printElement(int element) &#123;</span><br><span class="line">  print(element);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var list = [1, 2, 3];</span><br><span class="line"></span><br><span class="line">// Pass printElement as a parameter.</span><br><span class="line">list.forEach(printElement);</span><br></pre></td></tr></table></figure>
+<p>你也可以把一个函数定义为一个变量，就像下面这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var loudify = (msg) =&gt; &apos;!!! $&#123;msg.toUpperCase()&#125; !!!&apos;;</span><br><span class="line">assert(loudify(&apos;hello&apos;) == &apos;!!! HELLO !!!);</span><br></pre></td></tr></table></figure>
+<p>这个例子使用了匿名函数，关于匿名函数请看下一小节</p>
+<h6 id="匿名函数"><a href="#匿名函数" class="headerlink" title="匿名函数"></a>匿名函数</h6><p>许多函数都有名字，比如：main()或printElement().我们也可以创建一个没有名字的函数，就叫做匿名函数(anonymous function)，有时也叫lambda 或closure(闭包)。你可以将一个匿名函数分配给一个变量，例如，你可以从一个集合中添加或删除它。<br>匿名函数看起来与命名函数相似——在括号之间，由逗号和可选类型注解分隔零个或多个参数<br>下面的代码块包含了函数实体：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">([[Type] param1[, …]]) &#123; </span><br><span class="line">  codeBlock; </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></p>
+<p>下面的例子定义了一个带有非类型化参数的匿名函数，item。这个函数遍历列表，并打印对应的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var list = [&apos;apples&apos;, &apos;bananas&apos;, &apos;oranges&apos;];</span><br><span class="line">list.forEach((item) &#123;</span><br><span class="line">  print(&apos;$&#123;list.indexOf(item)&#125;: $item&apos;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">输出：</span><br><span class="line">0: apples</span><br><span class="line">1: bananas</span><br><span class="line">2: oranges</span><br></pre></td></tr></table></figure>
+<h6 id="语法作用域"><a href="#语法作用域" class="headerlink" title="语法作用域"></a>语法作用域</h6><p>Dart 是语法作用域型的语言，也就是说变量的生命周期是代码的布局静态决定的。你可以“在大括号之外追溯”来看一下变量是否存在于这个区域中<br>下面是一份关于嵌套的带参函数在不同的作用域等级上的示例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">bool topLevel = true;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var insideMain = true;</span><br><span class="line"></span><br><span class="line">  void myFunction() &#123;</span><br><span class="line">    var insideFunction = true;</span><br><span class="line"></span><br><span class="line">    void nestedFunction() &#123;</span><br><span class="line">      var insideNestedFunction = true;</span><br><span class="line"></span><br><span class="line">      assert(topLevel);</span><br><span class="line">      assert(insideMain);</span><br><span class="line">      assert(insideFunction);</span><br><span class="line">      assert(insideNestedFunction);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>请留意nestedFunction()是怎样使用不同作用域上的变量的，最好从最内层开始一直分析到最外层。</p>
+<h6 id="语法的封闭性"><a href="#语法的封闭性" class="headerlink" title="语法的封闭性"></a>语法的封闭性</h6><p>闭包是一种函数对象，它可以访问语法作用域中的变量，即使函数在变量本身的作用域之外被调用。<br>在下一个示例中，makeAdder()捕获了变量addBy。不管返回的函数在哪里被调用，它都可以使用addBy：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">/// Returns a function that adds [addBy] to the</span><br><span class="line">/// function&apos;s argument.</span><br><span class="line">Function makeAdder(num addBy) &#123;</span><br><span class="line">  return (num i) =&gt; addBy + i;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  // Create a function that adds 2.</span><br><span class="line">  var add2 = makeAdder(2);</span><br><span class="line"></span><br><span class="line">  // Create a function that adds 4.</span><br><span class="line">  var add4 = makeAdder(4);</span><br><span class="line"></span><br><span class="line">  assert(add2(3) == 5);</span><br><span class="line">  assert(add4(3) == 7);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="测试函数等价性"><a href="#测试函数等价性" class="headerlink" title="测试函数等价性"></a>测试函数等价性</h6><p>下面是关于顶级函数、静态方法和实例方法的等价性测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">foo() &#123;&#125; // 一个顶级函数</span><br><span class="line"></span><br><span class="line">class A &#123;</span><br><span class="line">     static void bar() &#123;&#125; // 一个静态方法</span><br><span class="line">     void baz() &#123;&#125; // 一个示例方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">     var x;</span><br><span class="line"></span><br><span class="line">     // 比较顶级函数</span><br><span class="line">     x = foo;</span><br><span class="line">     assert(A.bar == x);</span><br><span class="line"></span><br><span class="line">     // 比较实例方法</span><br><span class="line">     var v = new A(); // A的实例1</span><br><span class="line">     var w = new A(); // A的实例2</span><br><span class="line">     var y = w;</span><br><span class="line">     x = w.baz;</span><br><span class="line"></span><br><span class="line">     // 这些封闭引用了相同的示例对象（A的实例2）</span><br><span class="line">     // 所以它们是等价的</span><br><span class="line">     assert(y.baz == x);</span><br><span class="line"></span><br><span class="line">     // 这些封闭引用的十不同实例，所以它们不等价</span><br><span class="line">     aessert(v.baz != w.baz);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h6><p>所有的方法都有返回值，如果没有指定返回值，则是返回null</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">foo() &#123;&#125;</span><br><span class="line"></span><br><span class="line">assert(foo() == null);</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/04/Dart基础教程（二）/" rel="next" title="Dart基础教程（二）">
+                <i class="fa fa-chevron-left"></i> Dart基础教程（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/08/Dart基础教程（四）/" rel="prev" title="Dart基础教程（四）">
+                Dart基础教程（四） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Functions（函数）"><span class="nav-number">1.</span> <span class="nav-text">Functions（函数）</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#可选参数"><span class="nav-number">1.0.1.</span> <span class="nav-text">可选参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#可选命名参数"><span class="nav-number">1.0.2.</span> <span class="nav-text">可选命名参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#可选位置参数"><span class="nav-number">1.0.3.</span> <span class="nav-text">可选位置参数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#参数默认值"><span class="nav-number">1.0.4.</span> <span class="nav-text">参数默认值</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#main函数"><span class="nav-number">1.0.5.</span> <span class="nav-text">main函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#作为对象的函数"><span class="nav-number">1.0.6.</span> <span class="nav-text">作为对象的函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#匿名函数"><span class="nav-number">1.0.7.</span> <span class="nav-text">匿名函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#语法作用域"><span class="nav-number">1.0.8.</span> <span class="nav-text">语法作用域</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#语法的封闭性"><span class="nav-number">1.0.9.</span> <span class="nav-text">语法的封闭性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#测试函数等价性"><span class="nav-number">1.0.10.</span> <span class="nav-text">测试函数等价性</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#返回值"><span class="nav-number">1.0.11.</span> <span class="nav-text">返回值</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

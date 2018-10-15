@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="汉字转拼音," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="有时候我们有些需求要对汉字进行排序，比如最常见的联系人列表，好友列表等。对汉字排序是要根据拼音来进行排序，下面的代码就实现汉字转拼音。代码来自android系统的通讯录模块，具体是哪个版本已经不记得了。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535">
+<meta name="keywords" content="汉字转拼音">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Adnroid系统汉字转拼音">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/07/28/Adnroid系统汉字转拼音/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="有时候我们有些需求要对汉字进行排序，比如最常见的联系人列表，好友列表等。对汉字排序是要根据拼音来进行排序，下面的代码就实现汉字转拼音。代码来自android系统的通讯录模块，具体是哪个版本已经不记得了。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T13:56:02.852Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Adnroid系统汉字转拼音">
+<meta name="twitter:description" content="有时候我们有些需求要对汉字进行排序，比如最常见的联系人列表，好友列表等。对汉字排序是要根据拼音来进行排序，下面的代码就实现汉字转拼音。代码来自android系统的通讯录模块，具体是哪个版本已经不记得了。 12345678910111213141516171819202122232425262728293031323334353637383940414243444546474849505152535">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/07/28/Adnroid系统汉字转拼音/"/>
+
+
+
+
+
+  <title>Adnroid系统汉字转拼音 | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/07/28/Adnroid系统汉字转拼音/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Adnroid系统汉字转拼音</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-28T00:00:00+08:00">
+                2018-07-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/28/Adnroid系统汉字转拼音/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/28/Adnroid系统汉字转拼音/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>有时候我们有些需求要对汉字进行排序，比如最常见的联系人列表，好友列表等。对汉字排序是要根据拼音来进行排序，下面的代码就实现汉字转拼音。代码来自android系统的通讯录模块，具体是哪个版本已经不记得了。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br><span class="line">376</span><br><span class="line">377</span><br><span class="line">378</span><br><span class="line">379</span><br><span class="line">380</span><br><span class="line">381</span><br><span class="line">382</span><br><span class="line">383</span><br><span class="line">384</span><br><span class="line">385</span><br><span class="line">386</span><br><span class="line">387</span><br><span class="line">388</span><br><span class="line">389</span><br><span class="line">390</span><br><span class="line">391</span><br><span class="line">392</span><br><span class="line">393</span><br><span class="line">394</span><br><span class="line">395</span><br><span class="line">396</span><br><span class="line">397</span><br><span class="line">398</span><br><span class="line">399</span><br><span class="line">400</span><br><span class="line">401</span><br><span class="line">402</span><br><span class="line">403</span><br><span class="line">404</span><br><span class="line">405</span><br><span class="line">406</span><br><span class="line">407</span><br><span class="line">408</span><br><span class="line">409</span><br><span class="line">410</span><br><span class="line">411</span><br><span class="line">412</span><br><span class="line">413</span><br><span class="line">414</span><br><span class="line">415</span><br><span class="line">416</span><br><span class="line">417</span><br><span class="line">418</span><br><span class="line">419</span><br><span class="line">420</span><br><span class="line">421</span><br><span class="line">422</span><br><span class="line">423</span><br><span class="line">424</span><br><span class="line">425</span><br><span class="line">426</span><br><span class="line">427</span><br><span class="line">428</span><br><span class="line">429</span><br><span class="line">430</span><br><span class="line">431</span><br><span class="line">432</span><br><span class="line">433</span><br><span class="line">434</span><br><span class="line">435</span><br><span class="line">436</span><br><span class="line">437</span><br><span class="line">438</span><br><span class="line">439</span><br><span class="line">440</span><br><span class="line">441</span><br><span class="line">442</span><br><span class="line">443</span><br><span class="line">444</span><br><span class="line">445</span><br><span class="line">446</span><br><span class="line">447</span><br><span class="line">448</span><br><span class="line">449</span><br><span class="line">450</span><br><span class="line">451</span><br><span class="line">452</span><br><span class="line">453</span><br></pre></td><td class="code"><pre><span class="line">import android.text.TextUtils;</span><br><span class="line">import android.util.Log;</span><br><span class="line"></span><br><span class="line">import java.text.Collator;</span><br><span class="line">import java.util.ArrayList;</span><br><span class="line">import java.util.Locale;</span><br><span class="line"></span><br><span class="line">/**</span><br><span class="line"> * An object to convert Chinese character to its corresponding pinyin string. For characters with</span><br><span class="line"> * multiple possible pinyin string, only one is selected according to collator. Polyphone is not</span><br><span class="line"> * supported in this implementation. This class is implemented to achieve the best runtime</span><br><span class="line"> * performance and minimum runtime resources with tolerable sacrifice of accuracy. This</span><br><span class="line"> * implementation highly depends on zh_CN ICU collation data and must be always synchronized with</span><br><span class="line"> * ICU.</span><br><span class="line"> *</span><br><span class="line"> * Currently this file is aligned to zh.txt in ICU 4.6</span><br><span class="line"> */</span><br><span class="line">public class HanziToPinyin &#123;</span><br><span class="line">    private static final String TAG = &quot;HanziToPinyin&quot;;</span><br><span class="line"></span><br><span class="line">    // Turn on this flag when we want to check internal data structure.</span><br><span class="line">    private static final boolean DEBUG = false;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Unihans array. Each unihans is the first one within same pinyin. Use it to determine pinyin</span><br><span class="line">     * for all ~20k unihans.</span><br><span class="line">     */</span><br><span class="line">    public static final char[] UNIHANS = &#123;</span><br><span class="line">            &apos;\u5475&apos;, &apos;\u54ce&apos;, &apos;\u5b89&apos;, &apos;\u80ae&apos;, &apos;\u51f9&apos;,</span><br><span class="line">            &apos;\u516b&apos;, &apos;\u6300&apos;, &apos;\u6273&apos;, &apos;\u90a6&apos;, &apos;\u5305&apos;, &apos;\u5351&apos;, &apos;\u5954&apos;, &apos;\u4f3b&apos;,</span><br><span class="line">            &apos;\u5c44&apos;, &apos;\u8fb9&apos;, &apos;\u6807&apos;, &apos;\u618b&apos;, &apos;\u90a0&apos;, &apos;\u69df&apos;, &apos;\u7676&apos;, &apos;\u5cec&apos;,</span><br><span class="line">            &apos;\u5693&apos;, &apos;\u5a47&apos;, &apos;\u98e1&apos;, &apos;\u4ed3&apos;, &apos;\u64cd&apos;, &apos;\u518a&apos;, &apos;\u5d7e&apos;, &apos;\u564c&apos;,</span><br><span class="line">            &apos;\u53c9&apos;, &apos;\u9497&apos;, &apos;\u8fbf&apos;, &apos;\u4f25&apos;, &apos;\u6284&apos;, &apos;\u8f66&apos;, &apos;\u62bb&apos;, &apos;\u67fd&apos;,</span><br><span class="line">            &apos;\u5403&apos;, &apos;\u5145&apos;, &apos;\u62bd&apos;, &apos;\u51fa&apos;, &apos;\u6b3b&apos;, &apos;\u63e3&apos;, &apos;\u5ddd&apos;, &apos;\u75ae&apos;,</span><br><span class="line">            &apos;\u5439&apos;, &apos;\u6776&apos;, &apos;\u9034&apos;, &apos;\u75b5&apos;, &apos;\u5306&apos;, &apos;\u51d1&apos;, &apos;\u7c97&apos;, &apos;\u6c46&apos;,</span><br><span class="line">            &apos;\u5d14&apos;, &apos;\u90a8&apos;, &apos;\u6413&apos;, &apos;\u5491&apos;, &apos;\u5927&apos;, &apos;\u75b8&apos;, &apos;\u5f53&apos;, &apos;\u5200&apos;,</span><br><span class="line">            &apos;\u6dc2&apos;, &apos;\u5f97&apos;, &apos;\u6265&apos;, &apos;\u706f&apos;, &apos;\u6c10&apos;, &apos;\u55f2&apos;, &apos;\u7538&apos;, &apos;\u5201&apos;,</span><br><span class="line">            &apos;\u7239&apos;, &apos;\u4ec3&apos;, &apos;\u4e1f&apos;, &apos;\u4e1c&apos;, &apos;\u5517&apos;, &apos;\u561f&apos;, &apos;\u5073&apos;, &apos;\u5806&apos;,</span><br><span class="line">            &apos;\u9413&apos;, &apos;\u591a&apos;, &apos;\u5a40&apos;, &apos;\u8bf6&apos;, &apos;\u5940&apos;, &apos;\u97a5&apos;, &apos;\u800c&apos;, &apos;\u53d1&apos;,</span><br><span class="line">            &apos;\u5e06&apos;, &apos;\u65b9&apos;, &apos;\u98de&apos;, &apos;\u5206&apos;, &apos;\u4e30&apos;, &apos;\u8985&apos;, &apos;\u4ecf&apos;, &apos;\u7d11&apos;,</span><br><span class="line">            &apos;\u4f15&apos;, &apos;\u65ee&apos;, &apos;\u8be5&apos;, &apos;\u7518&apos;, &apos;\u5188&apos;, &apos;\u768b&apos;, &apos;\u6208&apos;, &apos;\u7d66&apos;,</span><br><span class="line">            &apos;\u6839&apos;, &apos;\u5e9a&apos;, &apos;\u5de5&apos;, &apos;\u52fe&apos;, &apos;\u4f30&apos;, &apos;\u74dc&apos;, &apos;\u7f6b&apos;, &apos;\u5173&apos;,</span><br><span class="line">            &apos;\u5149&apos;, &apos;\u5f52&apos;, &apos;\u886e&apos;, &apos;\u5459&apos;, &apos;\u54c8&apos;, &apos;\u54b3&apos;, &apos;\u9878&apos;, &apos;\u82c0&apos;,</span><br><span class="line">            &apos;\u84bf&apos;, &apos;\u8bc3&apos;, &apos;\u9ed2&apos;, &apos;\u62eb&apos;, &apos;\u4ea8&apos;, &apos;\u5677&apos;, &apos;\u543d&apos;, &apos;\u9f41&apos;,</span><br><span class="line">            &apos;\u5322&apos;, &apos;\u82b1&apos;, &apos;\u6000&apos;, &apos;\u72bf&apos;, &apos;\u5ddf&apos;, &apos;\u7070&apos;, &apos;\u660f&apos;, &apos;\u5419&apos;,</span><br><span class="line">            &apos;\u4e0c&apos;, &apos;\u52a0&apos;, &apos;\u620b&apos;, &apos;\u6c5f&apos;, &apos;\u827d&apos;, &apos;\u9636&apos;, &apos;\u5dfe&apos;, &apos;\u52a4&apos;,</span><br><span class="line">            &apos;\u5182&apos;, &apos;\u52fc&apos;, &apos;\u530a&apos;, &apos;\u5a1f&apos;, &apos;\u5658&apos;, &apos;\u519b&apos;, &apos;\u5494&apos;, &apos;\u5f00&apos;,</span><br><span class="line">            &apos;\u520a&apos;, &apos;\u95f6&apos;, &apos;\u5c3b&apos;, &apos;\u533c&apos;, &apos;\u524b&apos;, &apos;\u80af&apos;, &apos;\u962c&apos;, &apos;\u7a7a&apos;,</span><br><span class="line">            &apos;\u62a0&apos;, &apos;\u5233&apos;, &apos;\u5938&apos;, &apos;\u84af&apos;, &apos;\u5bbd&apos;, &apos;\u5321&apos;, &apos;\u4e8f&apos;, &apos;\u5764&apos;,</span><br><span class="line">            &apos;\u6269&apos;, &apos;\u5783&apos;, &apos;\u6765&apos;, &apos;\u5170&apos;, &apos;\u5577&apos;, &apos;\u635e&apos;, &apos;\u4ec2&apos;, &apos;\u52d2&apos;,</span><br><span class="line">            &apos;\u5844&apos;, &apos;\u5215&apos;, &apos;\u5006&apos;, &apos;\u5941&apos;, &apos;\u826f&apos;, &apos;\u64a9&apos;, &apos;\u5217&apos;, &apos;\u62ce&apos;,</span><br><span class="line">            &apos;\u3007&apos;, &apos;\u6e9c&apos;, &apos;\u9f99&apos;, &apos;\u779c&apos;, &apos;\u565c&apos;, &apos;\u5a08&apos;, &apos;\u7567&apos;, &apos;\u62a1&apos;,</span><br><span class="line">            &apos;\u7f57&apos;, &apos;\u5463&apos;, &apos;\u5988&apos;, &apos;\u973e&apos;, &apos;\u5ada&apos;, &apos;\u9099&apos;, &apos;\u732b&apos;, &apos;\u9ebc&apos;,</span><br><span class="line">            &apos;\u6c92&apos;, &apos;\u95e8&apos;, &apos;\u753f&apos;, &apos;\u54aa&apos;, &apos;\u7720&apos;, &apos;\u55b5&apos;, &apos;\u54a9&apos;, &apos;\u6c11&apos;,</span><br><span class="line">            &apos;\u540d&apos;, &apos;\u8c2c&apos;, &apos;\u6478&apos;, &apos;\u54de&apos;, &apos;\u6bea&apos;, &apos;\u62cf&apos;, &apos;\u5b7b&apos;, &apos;\u56e1&apos;,</span><br><span class="line">            &apos;\u56ca&apos;, &apos;\u5b6c&apos;, &apos;\u8bb7&apos;, &apos;\u9981&apos;, &apos;\u6041&apos;, &apos;\u80fd&apos;, &apos;\u59ae&apos;, &apos;\u62c8&apos;,</span><br><span class="line">            &apos;\u5b22&apos;, &apos;\u9e1f&apos;, &apos;\u634f&apos;, &apos;\u60a8&apos;, &apos;\u5b81&apos;, &apos;\u599e&apos;, &apos;\u519c&apos;, &apos;\u7fba&apos;,</span><br><span class="line">            &apos;\u5974&apos;, &apos;\u597b&apos;, &apos;\u8650&apos;, &apos;\u632a&apos;, &apos;\u5594&apos;, &apos;\u8bb4&apos;, &apos;\u8db4&apos;, &apos;\u62cd&apos;,</span><br><span class="line">            &apos;\u7705&apos;, &apos;\u4e53&apos;, &apos;\u629b&apos;, &apos;\u5478&apos;, &apos;\u55b7&apos;, &apos;\u5309&apos;, &apos;\u4e15&apos;, &apos;\u504f&apos;,</span><br><span class="line">            &apos;\u527d&apos;, &apos;\u6c15&apos;, &apos;\u59d8&apos;, &apos;\u4e52&apos;, &apos;\u948b&apos;, &apos;\u5256&apos;, &apos;\u4ec6&apos;, &apos;\u4e03&apos;,</span><br><span class="line">            &apos;\u6390&apos;, &apos;\u5343&apos;, &apos;\u545b&apos;, &apos;\u6084&apos;, &apos;\u767f&apos;, &apos;\u4fb5&apos;, &apos;\u9751&apos;, &apos;\u909b&apos;,</span><br><span class="line">            &apos;\u4e18&apos;, &apos;\u66f2&apos;, &apos;\u5f2e&apos;, &apos;\u7f3a&apos;, &apos;\u590b&apos;, &apos;\u5465&apos;, &apos;\u7a63&apos;, &apos;\u5a06&apos;,</span><br><span class="line">            &apos;\u60f9&apos;, &apos;\u4eba&apos;, &apos;\u6254&apos;, &apos;\u65e5&apos;, &apos;\u8338&apos;, &apos;\u53b9&apos;, &apos;\u5982&apos;, &apos;\u5827&apos;,</span><br><span class="line">            &apos;\u6875&apos;, &apos;\u95f0&apos;, &apos;\u82e5&apos;, &apos;\u4ee8&apos;, &apos;\u6be2&apos;, &apos;\u4e09&apos;, &apos;\u6852&apos;, &apos;\u63bb&apos;,</span><br><span class="line">            &apos;\u8272&apos;, &apos;\u68ee&apos;, &apos;\u50e7&apos;, &apos;\u6740&apos;, &apos;\u7b5b&apos;, &apos;\u5c71&apos;, &apos;\u4f24&apos;, &apos;\u5f30&apos;,</span><br><span class="line">            &apos;\u5962&apos;, &apos;\u7533&apos;, &apos;\u5347&apos;, &apos;\u5c38&apos;, &apos;\u53ce&apos;, &apos;\u4e66&apos;, &apos;\u5237&apos;, &apos;\u6454&apos;,</span><br><span class="line">            &apos;\u95e9&apos;, &apos;\u53cc&apos;, &apos;\u8c01&apos;, &apos;\u542e&apos;, &apos;\u5981&apos;, &apos;\u53b6&apos;, &apos;\u5fea&apos;, &apos;\u635c&apos;,</span><br><span class="line">            &apos;\u82cf&apos;, &apos;\u72fb&apos;, &apos;\u590a&apos;, &apos;\u5b59&apos;, &apos;\u5506&apos;, &apos;\u4ed6&apos;, &apos;\u82d4&apos;, &apos;\u574d&apos;,</span><br><span class="line">            &apos;\u94f4&apos;, &apos;\u5932&apos;, &apos;\u5fd1&apos;, &apos;\u71a5&apos;, &apos;\u5254&apos;, &apos;\u5929&apos;, &apos;\u4f7b&apos;, &apos;\u5e16&apos;,</span><br><span class="line">            &apos;\u5385&apos;, &apos;\u56f2&apos;, &apos;\u5077&apos;, &apos;\u92c0&apos;, &apos;\u6e4d&apos;, &apos;\u63a8&apos;, &apos;\u541e&apos;, &apos;\u6258&apos;,</span><br><span class="line">            &apos;\u6316&apos;, &apos;\u6b6a&apos;, &apos;\u5f2f&apos;, &apos;\u5c2a&apos;, &apos;\u5371&apos;, &apos;\u586d&apos;, &apos;\u7fc1&apos;, &apos;\u631d&apos;,</span><br><span class="line">            &apos;\u5140&apos;, &apos;\u5915&apos;, &apos;\u867e&apos;, &apos;\u4eda&apos;, &apos;\u4e61&apos;, &apos;\u7071&apos;, &apos;\u4e9b&apos;, &apos;\u5fc3&apos;,</span><br><span class="line">            &apos;\u661f&apos;, &apos;\u51f6&apos;, &apos;\u4f11&apos;, &apos;\u65f4&apos;, &apos;\u8f69&apos;, &apos;\u75b6&apos;, &apos;\u52cb&apos;, &apos;\u4e2b&apos;,</span><br><span class="line">            &apos;\u6079&apos;, &apos;\u592e&apos;, &apos;\u5e7a&apos;, &apos;\u8036&apos;, &apos;\u4e00&apos;, &apos;\u6b2d&apos;, &apos;\u5e94&apos;, &apos;\u54df&apos;,</span><br><span class="line">            &apos;\u4f63&apos;, &apos;\u4f18&apos;, &apos;\u625c&apos;, &apos;\u9e22&apos;, &apos;\u66f0&apos;, &apos;\u6655&apos;, &apos;\u531d&apos;, &apos;\u707d&apos;,</span><br><span class="line">            &apos;\u7ccc&apos;, &apos;\u7242&apos;, &apos;\u50ae&apos;, &apos;\u5219&apos;, &apos;\u8d3c&apos;, &apos;\u600e&apos;, &apos;\u5897&apos;, &apos;\u5412&apos;,</span><br><span class="line">            &apos;\u635a&apos;, &apos;\u6cbe&apos;, &apos;\u5f20&apos;, &apos;\u948a&apos;, &apos;\u8707&apos;, &apos;\u8d1e&apos;, &apos;\u4e89&apos;, &apos;\u4e4b&apos;,</span><br><span class="line">            &apos;\u4e2d&apos;, &apos;\u5dde&apos;, &apos;\u6731&apos;, &apos;\u6293&apos;, &apos;\u8de9&apos;, &apos;\u4e13&apos;, &apos;\u5986&apos;, &apos;\u96b9&apos;,</span><br><span class="line">            &apos;\u5b92&apos;, &apos;\u5353&apos;, &apos;\u5b5c&apos;, &apos;\u5b97&apos;, &apos;\u90b9&apos;, &apos;\u79df&apos;, &apos;\u94bb&apos;, &apos;\u539c&apos;,</span><br><span class="line">            &apos;\u5c0a&apos;, &apos;\u6628&apos;, &#125;;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Pinyin array. Each pinyin is corresponding to unihans of same offset in the unihans array.</span><br><span class="line">     */</span><br><span class="line">    public static final byte[][] PINYINS = &#123;</span><br><span class="line">            &#123; 65, 0, 0, 0, 0, 0 &#125;, &#123; 65, 73, 0, 0, 0, 0 &#125;, &#123; 65, 78, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 65, 78, 71, 0, 0, 0 &#125;, &#123; 65, 79, 0, 0, 0, 0 &#125;, &#123; 66, 65, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 66, 65, 73, 0, 0, 0 &#125;, &#123; 66, 65, 78, 0, 0, 0 &#125;, &#123; 66, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 66, 65, 79, 0, 0, 0 &#125;, &#123; 66, 69, 73, 0, 0, 0 &#125;, &#123; 66, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 66, 69, 78, 71, 0, 0 &#125;, &#123; 66, 73, 0, 0, 0, 0 &#125;, &#123; 66, 73, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 66, 73, 65, 79, 0, 0 &#125;, &#123; 66, 73, 69, 0, 0, 0 &#125;, &#123; 66, 73, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 66, 73, 78, 71, 0, 0 &#125;, &#123; 66, 79, 0, 0, 0, 0 &#125;, &#123; 66, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 65, 0, 0, 0, 0 &#125;, &#123; 67, 65, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 65, 78, 0, 0, 0 &#125;, &#123; 67, 65, 78, 71, 0, 0 &#125;, &#123; 67, 65, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 69, 0, 0, 0, 0 &#125;, &#123; 67, 69, 78, 0, 0, 0 &#125;, &#123; 67, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 65, 0, 0, 0 &#125;, &#123; 67, 72, 65, 73, 0, 0 &#125;, &#123; 67, 72, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 65, 78, 71, 0 &#125;, &#123; 67, 72, 65, 79, 0, 0 &#125;, &#123; 67, 72, 69, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 69, 78, 0, 0 &#125;, &#123; 67, 72, 69, 78, 71, 0 &#125;, &#123; 67, 72, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 79, 78, 71, 0 &#125;, &#123; 67, 72, 79, 85, 0, 0 &#125;, &#123; 67, 72, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 85, 65, 0, 0 &#125;, &#123; 67, 72, 85, 65, 73, 0 &#125;, &#123; 67, 72, 85, 65, 78, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 85, 65, 78, 71 &#125;, &#123; 67, 72, 85, 73, 0, 0 &#125;, &#123; 67, 72, 85, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 72, 85, 79, 0, 0 &#125;, &#123; 67, 73, 0, 0, 0, 0 &#125;, &#123; 67, 79, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 79, 85, 0, 0, 0 &#125;, &#123; 67, 85, 0, 0, 0, 0 &#125;, &#123; 67, 85, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 67, 85, 73, 0, 0, 0 &#125;, &#123; 67, 85, 78, 0, 0, 0 &#125;, &#123; 67, 85, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 65, 0, 0, 0, 0 &#125;, &#123; 68, 65, 73, 0, 0, 0 &#125;, &#123; 68, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 65, 78, 71, 0, 0 &#125;, &#123; 68, 65, 79, 0, 0, 0 &#125;, &#123; 68, 69, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 69, 73, 0, 0, 0 &#125;, &#123; 68, 69, 78, 0, 0, 0 &#125;, &#123; 68, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 73, 0, 0, 0, 0 &#125;, &#123; 68, 73, 65, 0, 0, 0 &#125;, &#123; 68, 73, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 73, 65, 79, 0, 0 &#125;, &#123; 68, 73, 69, 0, 0, 0 &#125;, &#123; 68, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 73, 85, 0, 0, 0 &#125;, &#123; 68, 79, 78, 71, 0, 0 &#125;, &#123; 68, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 85, 0, 0, 0, 0 &#125;, &#123; 68, 85, 65, 78, 0, 0 &#125;, &#123; 68, 85, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 68, 85, 78, 0, 0, 0 &#125;, &#123; 68, 85, 79, 0, 0, 0 &#125;, &#123; 69, 0, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 69, 73, 0, 0, 0, 0 &#125;, &#123; 69, 78, 0, 0, 0, 0 &#125;, &#123; 69, 78, 71, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 69, 82, 0, 0, 0, 0 &#125;, &#123; 70, 65, 0, 0, 0, 0 &#125;, &#123; 70, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 70, 65, 78, 71, 0, 0 &#125;, &#123; 70, 69, 73, 0, 0, 0 &#125;, &#123; 70, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 70, 69, 78, 71, 0, 0 &#125;, &#123; 70, 73, 65, 79, 0, 0 &#125;, &#123; 70, 79, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 70, 79, 85, 0, 0, 0 &#125;, &#123; 70, 85, 0, 0, 0, 0 &#125;, &#123; 71, 65, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 71, 65, 73, 0, 0, 0 &#125;, &#123; 71, 65, 78, 0, 0, 0 &#125;, &#123; 71, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 71, 65, 79, 0, 0, 0 &#125;, &#123; 71, 69, 0, 0, 0, 0 &#125;, &#123; 71, 69, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 71, 69, 78, 0, 0, 0 &#125;, &#123; 71, 69, 78, 71, 0, 0 &#125;, &#123; 71, 79, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 71, 79, 85, 0, 0, 0 &#125;, &#123; 71, 85, 0, 0, 0, 0 &#125;, &#123; 71, 85, 65, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 71, 85, 65, 73, 0, 0 &#125;, &#123; 71, 85, 65, 78, 0, 0 &#125;, &#123; 71, 85, 65, 78, 71, 0 &#125;,</span><br><span class="line">            &#123; 71, 85, 73, 0, 0, 0 &#125;, &#123; 71, 85, 78, 0, 0, 0 &#125;, &#123; 71, 85, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 65, 0, 0, 0, 0 &#125;, &#123; 72, 65, 73, 0, 0, 0 &#125;, &#123; 72, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 65, 78, 71, 0, 0 &#125;, &#123; 72, 65, 79, 0, 0, 0 &#125;, &#123; 72, 69, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 69, 73, 0, 0, 0 &#125;, &#123; 72, 69, 78, 0, 0, 0 &#125;, &#123; 72, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 77, 0, 0, 0, 0 &#125;, &#123; 72, 79, 78, 71, 0, 0 &#125;, &#123; 72, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 85, 0, 0, 0, 0 &#125;, &#123; 72, 85, 65, 0, 0, 0 &#125;, &#123; 72, 85, 65, 73, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 85, 65, 78, 0, 0 &#125;, &#123; 72, 85, 65, 78, 71, 0 &#125;, &#123; 72, 85, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 72, 85, 78, 0, 0, 0 &#125;, &#123; 72, 85, 79, 0, 0, 0 &#125;, &#123; 74, 73, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 74, 73, 65, 0, 0, 0 &#125;, &#123; 74, 73, 65, 78, 0, 0 &#125;, &#123; 74, 73, 65, 78, 71, 0 &#125;,</span><br><span class="line">            &#123; 74, 73, 65, 79, 0, 0 &#125;, &#123; 74, 73, 69, 0, 0, 0 &#125;, &#123; 74, 73, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 74, 73, 78, 71, 0, 0 &#125;, &#123; 74, 73, 79, 78, 71, 0 &#125;, &#123; 74, 73, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 74, 85, 0, 0, 0, 0 &#125;, &#123; 74, 85, 65, 78, 0, 0 &#125;, &#123; 74, 85, 69, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 74, 85, 78, 0, 0, 0 &#125;, &#123; 75, 65, 0, 0, 0, 0 &#125;, &#123; 75, 65, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 65, 78, 0, 0, 0 &#125;, &#123; 75, 65, 78, 71, 0, 0 &#125;, &#123; 75, 65, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 69, 0, 0, 0, 0 &#125;, &#123; 75, 69, 73, 0, 0, 0 &#125;, &#123; 75, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 69, 78, 71, 0, 0 &#125;, &#123; 75, 79, 78, 71, 0, 0 &#125;, &#123; 75, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 85, 0, 0, 0, 0 &#125;, &#123; 75, 85, 65, 0, 0, 0 &#125;, &#123; 75, 85, 65, 73, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 85, 65, 78, 0, 0 &#125;, &#123; 75, 85, 65, 78, 71, 0 &#125;, &#123; 75, 85, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 75, 85, 78, 0, 0, 0 &#125;, &#123; 75, 85, 79, 0, 0, 0 &#125;, &#123; 76, 65, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 65, 73, 0, 0, 0 &#125;, &#123; 76, 65, 78, 0, 0, 0 &#125;, &#123; 76, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 65, 79, 0, 0, 0 &#125;, &#123; 76, 69, 0, 0, 0, 0 &#125;, &#123; 76, 69, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 69, 78, 71, 0, 0 &#125;, &#123; 76, 73, 0, 0, 0, 0 &#125;, &#123; 76, 73, 65, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 73, 65, 78, 0, 0 &#125;, &#123; 76, 73, 65, 78, 71, 0 &#125;, &#123; 76, 73, 65, 79, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 73, 69, 0, 0, 0 &#125;, &#123; 76, 73, 78, 0, 0, 0 &#125;, &#123; 76, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 73, 85, 0, 0, 0 &#125;, &#123; 76, 79, 78, 71, 0, 0 &#125;, &#123; 76, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 85, 0, 0, 0, 0 &#125;, &#123; 76, 85, 65, 78, 0, 0 &#125;, &#123; 76, 85, 69, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 76, 85, 78, 0, 0, 0 &#125;, &#123; 76, 85, 79, 0, 0, 0 &#125;, &#123; 77, 0, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 65, 0, 0, 0, 0 &#125;, &#123; 77, 65, 73, 0, 0, 0 &#125;, &#123; 77, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 65, 78, 71, 0, 0 &#125;, &#123; 77, 65, 79, 0, 0, 0 &#125;, &#123; 77, 69, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 69, 73, 0, 0, 0 &#125;, &#123; 77, 69, 78, 0, 0, 0 &#125;, &#123; 77, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 73, 0, 0, 0, 0 &#125;, &#123; 77, 73, 65, 78, 0, 0 &#125;, &#123; 77, 73, 65, 79, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 73, 69, 0, 0, 0 &#125;, &#123; 77, 73, 78, 0, 0, 0 &#125;, &#123; 77, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 73, 85, 0, 0, 0 &#125;, &#123; 77, 79, 0, 0, 0, 0 &#125;, &#123; 77, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 77, 85, 0, 0, 0, 0 &#125;, &#123; 78, 65, 0, 0, 0, 0 &#125;, &#123; 78, 65, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 65, 78, 0, 0, 0 &#125;, &#123; 78, 65, 78, 71, 0, 0 &#125;, &#123; 78, 65, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 69, 0, 0, 0, 0 &#125;, &#123; 78, 69, 73, 0, 0, 0 &#125;, &#123; 78, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 69, 78, 71, 0, 0 &#125;, &#123; 78, 73, 0, 0, 0, 0 &#125;, &#123; 78, 73, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 73, 65, 78, 71, 0 &#125;, &#123; 78, 73, 65, 79, 0, 0 &#125;, &#123; 78, 73, 69, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 73, 78, 0, 0, 0 &#125;, &#123; 78, 73, 78, 71, 0, 0 &#125;, &#123; 78, 73, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 79, 78, 71, 0, 0 &#125;, &#123; 78, 79, 85, 0, 0, 0 &#125;, &#123; 78, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 78, 85, 65, 78, 0, 0 &#125;, &#123; 78, 85, 69, 0, 0, 0 &#125;, &#123; 78, 85, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 79, 0, 0, 0, 0, 0 &#125;, &#123; 79, 85, 0, 0, 0, 0 &#125;, &#123; 80, 65, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 65, 73, 0, 0, 0 &#125;, &#123; 80, 65, 78, 0, 0, 0 &#125;, &#123; 80, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 65, 79, 0, 0, 0 &#125;, &#123; 80, 69, 73, 0, 0, 0 &#125;, &#123; 80, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 69, 78, 71, 0, 0 &#125;, &#123; 80, 73, 0, 0, 0, 0 &#125;, &#123; 80, 73, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 73, 65, 79, 0, 0 &#125;, &#123; 80, 73, 69, 0, 0, 0 &#125;, &#123; 80, 73, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 73, 78, 71, 0, 0 &#125;, &#123; 80, 79, 0, 0, 0, 0 &#125;, &#123; 80, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 80, 85, 0, 0, 0, 0 &#125;, &#123; 81, 73, 0, 0, 0, 0 &#125;, &#123; 81, 73, 65, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 81, 73, 65, 78, 0, 0 &#125;, &#123; 81, 73, 65, 78, 71, 0 &#125;, &#123; 81, 73, 65, 79, 0, 0 &#125;,</span><br><span class="line">            &#123; 81, 73, 69, 0, 0, 0 &#125;, &#123; 81, 73, 78, 0, 0, 0 &#125;, &#123; 81, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 81, 73, 79, 78, 71, 0 &#125;, &#123; 81, 73, 85, 0, 0, 0 &#125;, &#123; 81, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 81, 85, 65, 78, 0, 0 &#125;, &#123; 81, 85, 69, 0, 0, 0 &#125;, &#123; 81, 85, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 82, 65, 78, 0, 0, 0 &#125;, &#123; 82, 65, 78, 71, 0, 0 &#125;, &#123; 82, 65, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 82, 69, 0, 0, 0, 0 &#125;, &#123; 82, 69, 78, 0, 0, 0 &#125;, &#123; 82, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 82, 73, 0, 0, 0, 0 &#125;, &#123; 82, 79, 78, 71, 0, 0 &#125;, &#123; 82, 79, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 82, 85, 0, 0, 0, 0 &#125;, &#123; 82, 85, 65, 78, 0, 0 &#125;, &#123; 82, 85, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 82, 85, 78, 0, 0, 0 &#125;, &#123; 82, 85, 79, 0, 0, 0 &#125;, &#123; 83, 65, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 65, 73, 0, 0, 0 &#125;, &#123; 83, 65, 78, 0, 0, 0 &#125;, &#123; 83, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 65, 79, 0, 0, 0 &#125;, &#123; 83, 69, 0, 0, 0, 0 &#125;, &#123; 83, 69, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 69, 78, 71, 0, 0 &#125;, &#123; 83, 72, 65, 0, 0, 0 &#125;, &#123; 83, 72, 65, 73, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 65, 78, 0, 0 &#125;, &#123; 83, 72, 65, 78, 71, 0 &#125;, &#123; 83, 72, 65, 79, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 69, 0, 0, 0 &#125;, &#123; 83, 72, 69, 78, 0, 0 &#125;, &#123; 83, 72, 69, 78, 71, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 73, 0, 0, 0 &#125;, &#123; 83, 72, 79, 85, 0, 0 &#125;, &#123; 83, 72, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 85, 65, 0, 0 &#125;, &#123; 83, 72, 85, 65, 73, 0 &#125;, &#123; 83, 72, 85, 65, 78, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 85, 65, 78, 71 &#125;, &#123; 83, 72, 85, 73, 0, 0 &#125;, &#123; 83, 72, 85, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 72, 85, 79, 0, 0 &#125;, &#123; 83, 73, 0, 0, 0, 0 &#125;, &#123; 83, 79, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 79, 85, 0, 0, 0 &#125;, &#123; 83, 85, 0, 0, 0, 0 &#125;, &#123; 83, 85, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 83, 85, 73, 0, 0, 0 &#125;, &#123; 83, 85, 78, 0, 0, 0 &#125;, &#123; 83, 85, 79, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 65, 0, 0, 0, 0 &#125;, &#123; 84, 65, 73, 0, 0, 0 &#125;, &#123; 84, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 65, 78, 71, 0, 0 &#125;, &#123; 84, 65, 79, 0, 0, 0 &#125;, &#123; 84, 69, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 69, 78, 71, 0, 0 &#125;, &#123; 84, 73, 0, 0, 0, 0 &#125;, &#123; 84, 73, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 73, 65, 79, 0, 0 &#125;, &#123; 84, 73, 69, 0, 0, 0 &#125;, &#123; 84, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 79, 78, 71, 0, 0 &#125;, &#123; 84, 79, 85, 0, 0, 0 &#125;, &#123; 84, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 85, 65, 78, 0, 0 &#125;, &#123; 84, 85, 73, 0, 0, 0 &#125;, &#123; 84, 85, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 84, 85, 79, 0, 0, 0 &#125;, &#123; 87, 65, 0, 0, 0, 0 &#125;, &#123; 87, 65, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 87, 65, 78, 0, 0, 0 &#125;, &#123; 87, 65, 78, 71, 0, 0 &#125;, &#123; 87, 69, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 87, 69, 78, 0, 0, 0 &#125;, &#123; 87, 69, 78, 71, 0, 0 &#125;, &#123; 87, 79, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 87, 85, 0, 0, 0, 0 &#125;, &#123; 88, 73, 0, 0, 0, 0 &#125;, &#123; 88, 73, 65, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 88, 73, 65, 78, 0, 0 &#125;, &#123; 88, 73, 65, 78, 71, 0 &#125;, &#123; 88, 73, 65, 79, 0, 0 &#125;,</span><br><span class="line">            &#123; 88, 73, 69, 0, 0, 0 &#125;, &#123; 88, 73, 78, 0, 0, 0 &#125;, &#123; 88, 73, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 88, 73, 79, 78, 71, 0 &#125;, &#123; 88, 73, 85, 0, 0, 0 &#125;, &#123; 88, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 88, 85, 65, 78, 0, 0 &#125;, &#123; 88, 85, 69, 0, 0, 0 &#125;, &#123; 88, 85, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 89, 65, 0, 0, 0, 0 &#125;, &#123; 89, 65, 78, 0, 0, 0 &#125;, &#123; 89, 65, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 89, 65, 79, 0, 0, 0 &#125;, &#123; 89, 69, 0, 0, 0, 0 &#125;, &#123; 89, 73, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 89, 73, 78, 0, 0, 0 &#125;, &#123; 89, 73, 78, 71, 0, 0 &#125;, &#123; 89, 79, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 89, 79, 78, 71, 0, 0 &#125;, &#123; 89, 79, 85, 0, 0, 0 &#125;, &#123; 89, 85, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 89, 85, 65, 78, 0, 0 &#125;, &#123; 89, 85, 69, 0, 0, 0 &#125;, &#123; 89, 85, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 65, 0, 0, 0, 0 &#125;, &#123; 90, 65, 73, 0, 0, 0 &#125;, &#123; 90, 65, 78, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 65, 78, 71, 0, 0 &#125;, &#123; 90, 65, 79, 0, 0, 0 &#125;, &#123; 90, 69, 0, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 69, 73, 0, 0, 0 &#125;, &#123; 90, 69, 78, 0, 0, 0 &#125;, &#123; 90, 69, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 65, 0, 0, 0 &#125;, &#123; 90, 72, 65, 73, 0, 0 &#125;, &#123; 90, 72, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 65, 78, 71, 0 &#125;, &#123; 90, 72, 65, 79, 0, 0 &#125;, &#123; 90, 72, 69, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 69, 78, 0, 0 &#125;, &#123; 90, 72, 69, 78, 71, 0 &#125;, &#123; 90, 72, 73, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 79, 78, 71, 0 &#125;, &#123; 90, 72, 79, 85, 0, 0 &#125;, &#123; 90, 72, 85, 0, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 85, 65, 0, 0 &#125;, &#123; 90, 72, 85, 65, 73, 0 &#125;, &#123; 90, 72, 85, 65, 78, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 85, 65, 78, 71 &#125;, &#123; 90, 72, 85, 73, 0, 0 &#125;, &#123; 90, 72, 85, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 72, 85, 79, 0, 0 &#125;, &#123; 90, 73, 0, 0, 0, 0 &#125;, &#123; 90, 79, 78, 71, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 79, 85, 0, 0, 0 &#125;, &#123; 90, 85, 0, 0, 0, 0 &#125;, &#123; 90, 85, 65, 78, 0, 0 &#125;,</span><br><span class="line">            &#123; 90, 85, 73, 0, 0, 0 &#125;, &#123; 90, 85, 78, 0, 0, 0 &#125;, &#123; 90, 85, 79, 0, 0, 0 &#125;, &#125;;</span><br><span class="line"></span><br><span class="line">    /** First and last Chinese character with known Pinyin according to zh collation */</span><br><span class="line">    private static final String FIRST_PINYIN_UNIHAN = &quot;\u963F&quot;;</span><br><span class="line">    private static final String LAST_PINYIN_UNIHAN = &quot;\u84D9&quot;;</span><br><span class="line">    /** The first Chinese character in Unicode block */</span><br><span class="line">    private static final char FIRST_UNIHAN = &apos;\u3400&apos;;</span><br><span class="line">    private static final Collator COLLATOR = Collator.getInstance(Locale.CHINA);</span><br><span class="line"></span><br><span class="line">    private static HanziToPinyin sInstance;</span><br><span class="line">    private final boolean mHasChinaCollator;</span><br><span class="line"></span><br><span class="line">    public static class Token &#123;</span><br><span class="line">        /**</span><br><span class="line">         * Separator between target string for each source char</span><br><span class="line">         */</span><br><span class="line">        public static final String SEPARATOR = &quot; &quot;;</span><br><span class="line"></span><br><span class="line">        public static final int LATIN = 1;</span><br><span class="line">        public static final int PINYIN = 2;</span><br><span class="line">        public static final int UNKNOWN = 3;</span><br><span class="line"></span><br><span class="line">        public Token() &#123;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        public Token(int type, String source, String target) &#123;</span><br><span class="line">            this.type = type;</span><br><span class="line">            this.source = source;</span><br><span class="line">            this.target = target;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        /**</span><br><span class="line">         * Type of this token, ASCII, PINYIN or UNKNOWN.</span><br><span class="line">         */</span><br><span class="line">        public int type;</span><br><span class="line">        /**</span><br><span class="line">         * Original string before translation.</span><br><span class="line">         */</span><br><span class="line">        public String source;</span><br><span class="line">        /**</span><br><span class="line">         * Translated string of source. For Han, target is corresponding Pinyin. Otherwise target is</span><br><span class="line">         * original string in source.</span><br><span class="line">         */</span><br><span class="line">        public String target;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    protected HanziToPinyin(boolean hasChinaCollator) &#123;</span><br><span class="line">        mHasChinaCollator = hasChinaCollator;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public static HanziToPinyin getInstance() &#123;</span><br><span class="line">        synchronized (HanziToPinyin.class) &#123;</span><br><span class="line">            if (sInstance != null) &#123;</span><br><span class="line">                return sInstance;</span><br><span class="line">            &#125;</span><br><span class="line">            // Check if zh_CN collation data is available</span><br><span class="line">            final Locale locale[] = Collator.getAvailableLocales();</span><br><span class="line">            for (int i = 0; i &lt; locale.length; i++) &#123;</span><br><span class="line">                if (locale[i].equals(Locale.CHINA)) &#123;</span><br><span class="line">                    // Do self validation just once.</span><br><span class="line">                    if (DEBUG) &#123;</span><br><span class="line">                        Log.d(TAG, &quot;Self validation. Result: &quot; + doSelfValidation());</span><br><span class="line">                    &#125;</span><br><span class="line">                    sInstance = new HanziToPinyin(true);</span><br><span class="line">                    return sInstance;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (sInstance == null)&#123;</span><br><span class="line">                if(Locale.CHINA.equals(Locale.getDefault()))&#123;</span><br><span class="line">                    sInstance = new HanziToPinyin(true);</span><br><span class="line">                    return sInstance;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            Log.w(TAG, &quot;There is no Chinese collator, HanziToPinyin is disabled&quot;);</span><br><span class="line">            sInstance = new HanziToPinyin(false);</span><br><span class="line">            return sInstance;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Validate if our internal table has some wrong value.</span><br><span class="line">     *</span><br><span class="line">     * @return true when the table looks correct.</span><br><span class="line">     */</span><br><span class="line">    private static boolean doSelfValidation() &#123;</span><br><span class="line">        char lastChar = UNIHANS[0];</span><br><span class="line">        String lastString = Character.toString(lastChar);</span><br><span class="line">        for (char c : UNIHANS) &#123;</span><br><span class="line">            if (lastChar == c) &#123;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            final String curString = Character.toString(c);</span><br><span class="line">            int cmp = COLLATOR.compare(lastString, curString);</span><br><span class="line">            if (cmp &gt;= 0) &#123;</span><br><span class="line">                Log.e(TAG, &quot;Internal error in Unihan table. &quot; + &quot;The last string \&quot;&quot; + lastString</span><br><span class="line">                        + &quot;\&quot; is greater than current string \&quot;&quot; + curString + &quot;\&quot;.&quot;);</span><br><span class="line">                return false;</span><br><span class="line">            &#125;</span><br><span class="line">            lastString = curString;</span><br><span class="line">        &#125;</span><br><span class="line">        return true;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private Token getToken(char character) &#123;</span><br><span class="line">        Token token = new Token();</span><br><span class="line">        final String letter = Character.toString(character);</span><br><span class="line">        token.source = letter;</span><br><span class="line">        int offset = -1;</span><br><span class="line">        int cmp;</span><br><span class="line">        if (character &lt; 256) &#123;</span><br><span class="line">            token.type = Token.LATIN;</span><br><span class="line">            token.target = letter;</span><br><span class="line">            return token;</span><br><span class="line">        &#125; else if (character &lt; FIRST_UNIHAN) &#123;</span><br><span class="line">            token.type = Token.UNKNOWN;</span><br><span class="line">            token.target = letter;</span><br><span class="line">            return token;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            cmp = COLLATOR.compare(letter, FIRST_PINYIN_UNIHAN);</span><br><span class="line">            if (cmp &lt; 0) &#123;</span><br><span class="line">                token.type = Token.UNKNOWN;</span><br><span class="line">                token.target = letter;</span><br><span class="line">                return token;</span><br><span class="line">            &#125; else if (cmp == 0) &#123;</span><br><span class="line">                token.type = Token.PINYIN;</span><br><span class="line">                offset = 0;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                cmp = COLLATOR.compare(letter, LAST_PINYIN_UNIHAN);</span><br><span class="line">                if (cmp &gt; 0) &#123;</span><br><span class="line">                    token.type = Token.UNKNOWN;</span><br><span class="line">                    token.target = letter;</span><br><span class="line">                    return token;</span><br><span class="line">                &#125; else if (cmp == 0) &#123;</span><br><span class="line">                    token.type = Token.PINYIN;</span><br><span class="line">                    offset = UNIHANS.length - 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        token.type = Token.PINYIN;</span><br><span class="line">        if (offset &lt; 0) &#123;</span><br><span class="line">            int begin = 0;</span><br><span class="line">            int end = UNIHANS.length - 1;</span><br><span class="line">            while (begin &lt;= end) &#123;</span><br><span class="line">                offset = (begin + end) / 2;</span><br><span class="line">                final String unihan = Character.toString(UNIHANS[offset]);</span><br><span class="line">                cmp = COLLATOR.compare(letter, unihan);</span><br><span class="line">                if (cmp == 0) &#123;</span><br><span class="line">                    break;</span><br><span class="line">                &#125; else if (cmp &gt; 0) &#123;</span><br><span class="line">                    begin = offset + 1;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    end = offset - 1;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (cmp &lt; 0) &#123;</span><br><span class="line">            offset--;</span><br><span class="line">        &#125;</span><br><span class="line">        StringBuilder pinyin = new StringBuilder();</span><br><span class="line">        for (int j = 0; j &lt; PINYINS[offset].length &amp;&amp; PINYINS[offset][j] != 0; j++) &#123;</span><br><span class="line">            pinyin.append((char) PINYINS[offset][j]);</span><br><span class="line">        &#125;</span><br><span class="line">        token.target = pinyin.toString();</span><br><span class="line">        return token;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    /**</span><br><span class="line">     * Convert the input to a array of tokens. The sequence of ASCII or Unknown characters without</span><br><span class="line">     * space will be put into a Token, One Hanzi character which has pinyin will be treated as a</span><br><span class="line">     * Token. If these is no China collator, the empty token array is returned.</span><br><span class="line">     */</span><br><span class="line">    public ArrayList&lt;Token&gt; get(final String input) &#123;</span><br><span class="line">        ArrayList&lt;Token&gt; tokens = new ArrayList&lt;Token&gt;();</span><br><span class="line">        if (!mHasChinaCollator || TextUtils.isEmpty(input)) &#123;</span><br><span class="line">            // return empty tokens.</span><br><span class="line">            return tokens;</span><br><span class="line">        &#125;</span><br><span class="line">        final int inputLength = input.length();</span><br><span class="line">        final StringBuilder sb = new StringBuilder();</span><br><span class="line">        int tokenType = Token.LATIN;</span><br><span class="line">        // Go through the input, create a new token when</span><br><span class="line">        // a. Token type changed</span><br><span class="line">        // b. Get the Pinyin of current charater.</span><br><span class="line">        // c. current character is space.</span><br><span class="line">        for (int i = 0; i &lt; inputLength; i++) &#123;</span><br><span class="line">            final char character = input.charAt(i);</span><br><span class="line">            if (character == &apos; &apos;) &#123;</span><br><span class="line">                if (sb.length() &gt; 0) &#123;</span><br><span class="line">                    addToken(sb, tokens, tokenType);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125; else if (character &lt; 256) &#123;</span><br><span class="line">                if (tokenType != Token.LATIN &amp;&amp; sb.length() &gt; 0) &#123;</span><br><span class="line">                    addToken(sb, tokens, tokenType);</span><br><span class="line">                &#125;</span><br><span class="line">                tokenType = Token.LATIN;</span><br><span class="line">                sb.append(character);</span><br><span class="line">            &#125; else if (character &lt; FIRST_UNIHAN) &#123;</span><br><span class="line">                if (tokenType != Token.UNKNOWN &amp;&amp; sb.length() &gt; 0) &#123;</span><br><span class="line">                    addToken(sb, tokens, tokenType);</span><br><span class="line">                &#125;</span><br><span class="line">                tokenType = Token.UNKNOWN;</span><br><span class="line">                sb.append(character);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                Token t = getToken(character);</span><br><span class="line">                if (t.type == Token.PINYIN) &#123;</span><br><span class="line">                    if (sb.length() &gt; 0) &#123;</span><br><span class="line">                        addToken(sb, tokens, tokenType);</span><br><span class="line">                    &#125;</span><br><span class="line">                    tokens.add(t);</span><br><span class="line">                    tokenType = Token.PINYIN;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (tokenType != t.type &amp;&amp; sb.length() &gt; 0) &#123;</span><br><span class="line">                        addToken(sb, tokens, tokenType);</span><br><span class="line">                    &#125;</span><br><span class="line">                    tokenType = t.type;</span><br><span class="line">                    sb.append(character);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        if (sb.length() &gt; 0) &#123;</span><br><span class="line">            addToken(sb, tokens, tokenType);</span><br><span class="line">        &#125;</span><br><span class="line">        return tokens;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private void addToken(</span><br><span class="line">            final StringBuilder sb, final ArrayList&lt;Token&gt; tokens, final int tokenType) &#123;</span><br><span class="line">        String str = sb.toString();</span><br><span class="line">        tokens.add(new Token(tokenType, str, str));</span><br><span class="line">        sb.setLength(0);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/汉字转拼音/" rel="tag"># 汉字转拼音</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/30/ArrayAdapter使用对象直接显示/" rel="prev" title="ArrayAdapter使用对象直接显示">
+                ArrayAdapter使用对象直接显示 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

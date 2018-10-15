@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Dart," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="关键字下面的表格列出了一些Dart的关键字             abstract&amp;nbsp;1      do      import&amp;nbsp;1      super              as&amp;nbsp;1      dynamic&amp;nbsp;1      in      switch              assert      else      interface&amp;nbsp">
+<meta name="keywords" content="Dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart基础教程（二）">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/08/04/Dart基础教程（二）/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="关键字下面的表格列出了一些Dart的关键字             abstract&amp;nbsp;1      do      import&amp;nbsp;1      super              as&amp;nbsp;1      dynamic&amp;nbsp;1      in      switch              assert      else      interface&amp;nbsp">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T13:56:02.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dart基础教程（二）">
+<meta name="twitter:description" content="关键字下面的表格列出了一些Dart的关键字             abstract&amp;nbsp;1      do      import&amp;nbsp;1      super              as&amp;nbsp;1      dynamic&amp;nbsp;1      in      switch              assert      else      interface&amp;nbsp">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/08/04/Dart基础教程（二）/"/>
+
+
+
+
+
+  <title>Dart基础教程（二） | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/08/04/Dart基础教程（二）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dart基础教程（二）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-04T00:00:00+08:00">
+                2018-08-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index">
+                    <span itemprop="name">Dart</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/04/Dart基础教程（二）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/04/Dart基础教程（二）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="关键字"><a href="#关键字" class="headerlink" title="关键字"></a>关键字</h4><p>下面的表格列出了一些Dart的关键字</p>
+<html><br><br><table class="table table-striped nowrap"><br>  <tbody><br>    <tr><br>      <td>abstract&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>do</td><br>      <td>import&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>super</td><br>    </tr><br>    <tr><br>      <td>as&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>dynamic&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>in</td><br>      <td>switch</td><br>    </tr><br>    <tr><br>      <td>assert</td><br>      <td>else</td><br>      <td>interface&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>sync<em>&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></em></td><br>    </tr><br>    <tr><br>      <td>async&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></td><br>      <td>enum</td><br>      <td>is</td><br>      <td>this</td><br>    </tr><br>    <tr><br>      <td>async&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></td><br>      <td>export&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>library&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>throw</td><br>    </tr><br>    <tr><br>      <td>await&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></td><br>      <td>external&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>mixin&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>true</td><br>    </tr><br>    <tr><br>      <td>break</td><br>      <td>extends</td><br>      <td>new</td><br>      <td>try</td><br>    </tr><br>    <tr><br>      <td>case</td><br>      <td>factory&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>null</td><br>      <td>typedef&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>    </tr><br>    <tr><br>      <td>catch</td><br>      <td>false</td><br>      <td>operator&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>var</td><br>    </tr><br>    <tr><br>      <td>class</td><br>      <td>final</td><br>      <td>part&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>void</td><br>    </tr><br>    <tr><br>      <td>const</td><br>      <td>finally</td><br>      <td>rethrow</td><br>      <td>while</td><br>    </tr><br>    <tr><br>      <td>continue</td><br>      <td>for</td><br>      <td>return</td><br>      <td>with</td><br>    </tr><br>    <tr><br>      <td>covariant&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>get&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>set&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>yield&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></td><br>    </tr><br>    <tr><br>      <td>default</td><br>      <td>if</td><br>      <td>static&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>yield*&nbsp;<sup title="limited reserved word" alt="limited reserved word">2</sup><br></td><br>    </tr><br>    <tr><br>      <td>deferred&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>implements&nbsp;<sup title="built-in-identifier" alt="built-in-identifier">1</sup><br></td><br>      <td>&nbsp;</td><br>      <td>&nbsp;</td><br>    </tr><br>  </tbody><br></table><br></html>
+
+<ul>
+<li>上标1的单词是内置的标识符(built-in identifiers)。避免使用内置标识符作为标识符，如果使用内置标识符作为类或类型的名称，会导致程序异常（运行时错误）</li>
+<li>上标2的单词是的Dart1.0版本之后添加了与异步支持相关的新的、有限的保留字，不能使用async，await，或yield在标有async，或sync的任何函数体中作为标识符</li>
+<li>在关键字表中的所有单词都是保留字。不能使用保留字作为标识符</li>
+</ul>
+<h4 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h4><p>下面是创建变量并对其赋值的一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var name = &apos;Bob&apos;;</span><br></pre></td></tr></table></figure>
+<p>变量都引用，变量name包含对一个 String 对象值是 “Bob” 的引用<br>name变量的类型为字符串，但是你可以通过指定它的类型来进行改变。如果一个对象不被限制为单个类型，则指定为Object或dynamic类型</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dynamic name = &apos;Bob&apos;;</span><br></pre></td></tr></table></figure>
+<p>另一种方式就是现实的声明类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String name = &apos;Bob&apos;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：本章参照风格指南推荐的使用var,而不是为局部变量做类型标注。</span><br></pre></td></tr></table></figure>
+<h4 id="默认值"><a href="#默认值" class="headerlink" title="默认值"></a>默认值</h4><p>没有初始化的变量默认值为null，甚至数字变量也是null，因为数字——就像Dart中的其他东西一样——是对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int lineCount;</span><br><span class="line">assert(lineCount == null);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：assert() 调用在生产模式(production mode)下是被忽略的。在检查模式下，aeesrt(condition) 抛出一个异常，除非条件为真</span><br></pre></td></tr></table></figure>
+<h4 id="final-和-const"><a href="#final-和-const" class="headerlink" title="final 和 const"></a>final 和 const</h4><p>如果从不打算改变一个变量，使用 final 或者 const 代替 var 或者其他类型，一个 final 变量只能被设置一次；一个 const 变量是一个编译时常量（Const变量是隐式的final）<br>被声明为 final 的顶层或类变量在第一次使用时被初始化：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：实例变量只能是final，不能是const</span><br></pre></td></tr></table></figure></p>
+<p>下面是final变量的初始化和赋值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">final name = &apos;Bob&apos;; // 没有指定类型</span><br><span class="line">final String nickname = &apos;Bobby&apos;;</span><br></pre></td></tr></table></figure>
+<p>不能改变一个final变量的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name = &apos;Alice&apos;; // 错误</span><br></pre></td></tr></table></figure>
+<p>使用常量作为要编译的常数变量。如果 const的变量是在类级别，将其标记为静态常量<br>在这里声明变量，将值设置为编译时常数，如文字，一个 const 变量，或常数算术运算的结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const bar = 1000000;       //压力单位(dynes/cm2)</span><br><span class="line">const atm = 1.01325 * bar; // 标准大气压</span><br></pre></td></tr></table></figure>
+<p>const关键字不只是用来声明常量变量，你也可以用它来创建常量值，也可以声明创建常量值的构造函数,任何变量都可以有一个常数值<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var foo = const [];</span><br><span class="line">final bar = const [];</span><br><span class="line">const baz = []; // 等于 `const []`</span><br></pre></td></tr></table></figure></p>
+<p>我们可以在const声明的初始化表达中省略const，就像上面的baz一样。<br>你可以改变非final的非const变量的值，即使它曾经有一个const值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foo = [1, 2, 3]; // 等于 const []</span><br></pre></td></tr></table></figure>
+<p>你不能改变const变量的值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">baz = [42]; // 错误.</span><br></pre></td></tr></table></figure>
+<h4 id="内置类型"><a href="#内置类型" class="headerlink" title="内置类型"></a>内置类型</h4><p>Dart语言对以下类型的特殊支持：</p>
+<ul>
+<li>数字 numbers</li>
+<li>字符串 strings</li>
+<li>布尔 booleans</li>
+<li>列表 lists (也叫数组 arrays)</li>
+<li>map 集合 maps</li>
+<li>runes (for expressing Unicode characters in a string)字符（用于在字符串中表示Unicode字符）</li>
+<li>符号 symbols</li>
+</ul>
+<p>您可以使用常量来初始化任何这些特殊类型的对象，比如：’this is a string’是字符串常量，而ture的是一个布尔值<br>因为在 Dart 中，每一个变量是指一个对象，即一个类的实例，通常可以使用构造函数初始化变量的对象实例。一些内置的类型都有自己的构造函数。例如，你可以使用 Map() 构造函数来创建一个映射，使用代码，如 new Map()。</p>
+<h4 id="Numbers"><a href="#Numbers" class="headerlink" title="Numbers"></a>Numbers</h4><p>Dart 数字有两种形式：</p>
+<h6 id="int"><a href="#int" class="headerlink" title="int"></a>int</h6><p>整数值不大于64位，这个取决于平台。在Dart虚拟机中，值可以从-2的63次方到2的63次方减一。编译成JavaScript的Dart使用的是JavaScript numbers，所以值是-2的63次方到2的63次方减一-2的53次方到2的53次方减一</p>
+<h6 id="double"><a href="#double" class="headerlink" title="double"></a>double</h6><p>64位（双精度）浮点数，由IEEE 754制定标准指定。<br>int和double是num的子类型。该数字类型包括基本运算符，如+， - ，/和*，同时也有abs(), ceil(), 和 floor()等其它方法，也支持位运算符，例如 &gt;&gt;。如果num及其子类型没有你要找的方法或内容，dart:math库可能有。<br>整数是没有小数点的数字。以下是定义整数常量的一些例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">int x = 1;</span><br><span class="line">int hex = 0xDEADBEEF;</span><br></pre></td></tr></table></figure>
+<p>如果一个数字包括一个小数，这是一个Double类型的。以下是定义Double文字的一些例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">double y = 1.1;</span><br><span class="line">double exponents = 1.42e5;</span><br></pre></td></tr></table></figure>
+<p>下面展示如何把字符串转换成一个数字，反之亦然：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// String -&gt; int</span><br><span class="line">var one = int.parse(&apos;1&apos;);</span><br><span class="line">assert(one == 1);</span><br><span class="line"></span><br><span class="line">// String -&gt; double</span><br><span class="line">var onePointOne = double.parse(&apos;1.1&apos;);</span><br><span class="line">assert(onePointOne == 1.1);</span><br><span class="line"></span><br><span class="line">// int -&gt; String</span><br><span class="line">String oneAsString = 1.toString();</span><br><span class="line">assert(oneAsString == &apos;1&apos;);</span><br><span class="line"></span><br><span class="line">// double -&gt; String</span><br><span class="line">String piAsString = 3.14159.toStringAsFixed(2);</span><br><span class="line">assert(piAsString == &apos;3.14&apos;);</span><br></pre></td></tr></table></figure>
+<p>int 类型规定了传统按位移位（&lt;&lt;，&gt;&gt;），与（＆）和或（|）运算符。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assert((3 &lt;&lt; 1) == 6); // 0011 &lt;&lt; 1 == 0110</span><br><span class="line">assert((3 &gt;&gt; 1) == 1); // 0011 &gt;&gt; 1 == 0001</span><br><span class="line">assert((3 | 4) == 7); // 0011 | 0100 == 0111</span><br></pre></td></tr></table></figure>
+<p>数字是编译时常量，许多算术表达式也是编译时常量，只要它们的操作数是编译时常数，就可以计算到数字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const msPerSecond = 1000;</span><br><span class="line">const secondsUntilRetry = 5;</span><br><span class="line">const msUntilRetry = secondsUntilRetry * msPerSecond;</span><br></pre></td></tr></table></figure>
+<h6 id="Strings"><a href="#Strings" class="headerlink" title="Strings"></a>Strings</h6><p>Dart字符串是UTF-16编码单元的序列。可以使用单或双引号来创建一个字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var s1 = &apos;Single quotes work well for string literals.&apos;;</span><br><span class="line">var s2 = &quot;Double quotes work just as well.&quot;;</span><br><span class="line">var s3 = &apos;It\&apos;s easy to escape the string delimiter.&apos;;</span><br><span class="line">var s4 = &quot;It&apos;s even easier to use the other delimiter.&quot;;</span><br></pre></td></tr></table></figure>
+<p>你可以使用 ${expression}将表达式的值放入字符串中，如果表达式是一个标识符，你可以跳过{}。为了获得相应对象的字符串，Dart 调用对象的 toString（）方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var s = &apos;string interpolation&apos;;</span><br><span class="line"></span><br><span class="line">assert(&apos;Dart has $s, which is very handy.&apos; ==</span><br><span class="line">    &apos;Dart has string interpolation, &apos; +</span><br><span class="line">        &apos;which is very handy.&apos;);</span><br><span class="line">assert(&apos;That deserves all caps. &apos; +</span><br><span class="line">        &apos;$&#123;s.toUpperCase()&#125; is very handy!&apos; ==</span><br><span class="line">    &apos;That deserves all caps. &apos; +</span><br><span class="line">        &apos;STRING INTERPOLATION is very handy!&apos;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：运算符== 测试两个对象是否是等价的。两个字符串是等价的，如果它们包含的代码单元相同的序列。</span><br></pre></td></tr></table></figure>
+<p>可以利用相邻字符串或+运算符连接字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">var s1 = &apos;String &apos; &apos;concatenation&apos;</span><br><span class="line">         &quot; works even over line breaks.&quot;;</span><br><span class="line">assert(s1 == &apos;String concatenation works even over &apos;</span><br><span class="line">             &apos;line breaks.&apos;);</span><br><span class="line"></span><br><span class="line">var s2 = &apos;The + operator &apos;</span><br><span class="line">         + &apos;works, as well.&apos;;</span><br><span class="line">assert(s2 == &apos;The + operator works, as well.&apos;);</span><br></pre></td></tr></table></figure>
+<p>另一种方法来创建一个多行字符串：使用三个单引号或双引号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var s1 = &apos;&apos;&apos;</span><br><span class="line">You can create</span><br><span class="line">multi-line strings like this one.</span><br><span class="line">&apos;&apos;&apos;;</span><br><span class="line"></span><br><span class="line">var s2 = &quot;&quot;&quot;This is also a</span><br><span class="line">multi-line string.&quot;&quot;&quot;;</span><br></pre></td></tr></table></figure>
+<p>可以通过带有 r 的前缀来创建一个“raw”的字符串：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var s = r&apos;In a raw string, not even \n gets special treatment.&apos;;</span><br></pre></td></tr></table></figure>
+<p>Strings也是编译时常量，任何插值表达式都是一个编译时常量，它的值就等于null或数字、字符串或布尔值</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// These work in a const string.</span><br><span class="line">const aConstNum = 0;</span><br><span class="line">const aConstBool = true;</span><br><span class="line">const aConstString = &apos;a constant string&apos;;</span><br><span class="line"></span><br><span class="line">// These do NOT work in a const string.</span><br><span class="line">var aNum = 0;</span><br><span class="line">var aBool = true;</span><br><span class="line">var aString = &apos;a string&apos;;</span><br><span class="line">const aConstList = [1, 2, 3];</span><br><span class="line"></span><br><span class="line">const validConstString = &apos;$aConstNum $aConstBool $aConstString&apos;;</span><br><span class="line">// const invalidConstString = &apos;$aNum $aBool $aString $aConstList&apos;;</span><br></pre></td></tr></table></figure>
+<h6 id="Booleans"><a href="#Booleans" class="headerlink" title="Booleans"></a>Booleans</h6><p>为了表示布尔值，Dart 有一个名为bool的类型。只有两个值：true 和 false，它们都是编译时常量。<br>Dart的类型安全意味着不能使用诸如if（nonbooleanValue）或assert （nobooleanvalue）之类的代码，而是要显示的检查值，就像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// Check for an empty string.</span><br><span class="line">var fullName = &apos;&apos;;</span><br><span class="line">assert(fullName.isEmpty);</span><br><span class="line"></span><br><span class="line">// Check for zero.</span><br><span class="line">var hitPoints = 0;</span><br><span class="line">assert(hitPoints &lt;= 0);</span><br><span class="line"></span><br><span class="line">// Check for null.</span><br><span class="line">var unicorn;</span><br><span class="line">assert(unicorn == null);</span><br><span class="line"></span><br><span class="line">// Check for NaN.</span><br><span class="line">var iMeantToDoThis = 0 / 0;</span><br><span class="line">assert(iMeantToDoThis.isNaN);</span><br></pre></td></tr></table></figure>
+<h6 id="Lists"><a href="#Lists" class="headerlink" title="Lists"></a>Lists</h6><p>几乎每一个编程语言中最常见的集合就是数组或有序组对象了，在Dart，数组是列表对象，所以我们通常只是将其称为lists。<br>Dart列表看起来像JavaScript数组常量。 这里有一个简单的Dart列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var list = [1, 2, 3];</span><br></pre></td></tr></table></figure>
+<p>列表使用从零开始的索引，其中0为第一个元素,list.length-1是最后一个元素的索引。你可以得到一个列表的长度，就像在JavaScript中一样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">var list = [1, 2, 3];</span><br><span class="line">assert(list.length == 3);</span><br><span class="line">assert(list[1] == 2);</span><br><span class="line"></span><br><span class="line">list[1] = 1;</span><br><span class="line">assert(list[1] == 1);</span><br></pre></td></tr></table></figure>
+<p>要创建一个编译时常量的列表，请在列表之前添加const。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var constantList = const [1, 2, 3];</span><br><span class="line">// constantList[1] = 1; //错误.</span><br></pre></td></tr></table></figure>
+<h6 id="Maps"><a href="#Maps" class="headerlink" title="Maps"></a>Maps</h6><p>一般而言，一个map就是一个键值对对象，键和值都可以是任何类型的对象，键是唯一的，值可以不唯一（键不可以重复，值可以重复）。<br>这里有几个简单的Dart图的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var gifts = &#123;</span><br><span class="line">  // Key:    Value</span><br><span class="line">  &apos;first&apos;: &apos;partridge&apos;,</span><br><span class="line">  &apos;second&apos;: &apos;turtledoves&apos;,</span><br><span class="line">  &apos;fifth&apos;: &apos;golden rings&apos;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">var nobleGases = &#123;</span><br><span class="line">  2: &apos;helium&apos;,</span><br><span class="line">  10: &apos;neon&apos;,</span><br><span class="line">  18: &apos;argon&apos;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：编译器会把gifts编译成Map&lt;String,String&gt;类型，nobleGases编译成Map&lt;int,String&gt;类型，我们只能给它们添加想对应的类型，否则会报错。</span><br></pre></td></tr></table></figure>
+<p>我们也可以用Map的构造方法创建map对象:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">var gifts = Map();</span><br><span class="line">gifts[&apos;first&apos;] = &apos;partridge&apos;;</span><br><span class="line">gifts[&apos;second&apos;] = &apos;turtledoves&apos;;</span><br><span class="line">gifts[&apos;fifth&apos;] = &apos;golden rings&apos;;</span><br><span class="line"></span><br><span class="line">var nobleGases = Map();</span><br><span class="line">nobleGases[2] = &apos;helium&apos;;</span><br><span class="line">nobleGases[10] = &apos;neon&apos;;</span><br><span class="line">nobleGases[18] = &apos;argon&apos;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：我们看到，创建Map时，没有用new Map()。在dart 2以后，new关键词是可有可无的</span><br></pre></td></tr></table></figure>
+<p>添加新键值对到现有的map就像你在JavaScript中：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var gifts = &#123;&apos;first&apos;: &apos;partridge&apos;&#125;;</span><br><span class="line">gifts[&apos;fourth&apos;] = &apos;calling birds&apos;;</span><br></pre></td></tr></table></figure>
+<p>检索map的值(以在 JavaScript 中相同的方式)：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var gifts = &#123;&apos;first&apos;: &apos;partridge&apos;&#125;;</span><br><span class="line">assert(gifts[&apos;first&apos;] == &apos;partridge&apos;);</span><br></pre></td></tr></table></figure>
+<p>如果你寻找的关键词不在map里，则返回空（null）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var gifts = &#123;&apos;first&apos;: &apos;partridge&apos;&#125;;</span><br><span class="line">assert(gifts[&apos;fifth&apos;] == null);</span><br></pre></td></tr></table></figure>
+<p>使用 .length，以获得map中键值对的数目</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">var gifts = &#123;&apos;first&apos;: &apos;partridge&apos;&#125;;</span><br><span class="line">gifts[&apos;fourth&apos;] = &apos;calling birds&apos;;</span><br><span class="line">assert(gifts.length == 2);</span><br></pre></td></tr></table></figure>
+<p>在map前添加const，创建编译时常量map：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">final constantMap = const &#123;</span><br><span class="line">  2: &apos;helium&apos;,</span><br><span class="line">  10: &apos;neon&apos;,</span><br><span class="line">  18: &apos;argon&apos;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h6 id="Runes"><a href="#Runes" class="headerlink" title="Runes"></a>Runes</h6><p>在Dart 中 runes 是UTF-32字符集的string 对象。<br>Unicode为世界上所有的字母、数字和符号定义了一个惟一的数值。因为Dart字符串是UTF-16编码单元的序列，所以在字符串中表示32位Unicode值需要特殊的语法。<br>表达Unicode代码点的通常方法是uXXXX，其中XXXX是一个4位的十六进制值。<br>String的codeUnitAt和codeUnit属性可以获取UTF-16字符集的字符。使用runes属性获取字符串的字符：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">main() &#123;</span><br><span class="line">  var clapping = &apos;\u&#123;1f44f&#125;&apos;;</span><br><span class="line">  print(clapping);</span><br><span class="line">  print(clapping.codeUnits);</span><br><span class="line">  print(clapping.runes.toList());</span><br><span class="line"></span><br><span class="line">  Runes input = new Runes(</span><br><span class="line">      &apos;\u2665  \u&#123;1f605&#125;  \u&#123;1f60e&#125;  \u&#123;1f47b&#125;  \u&#123;1f596&#125;  \u&#123;1f44d&#125;&apos;);</span><br><span class="line">  print(new String.fromCharCodes(input));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">👏</span><br><span class="line">[55357, 56399]</span><br><span class="line">[128079]</span><br><span class="line">♥  😅  😎  👻  🖖  👍</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：在使用列表操作符操作runs时要小心。可能会以很容易地挂掉，这取决于特定的语言、字符集和操作。</span><br></pre></td></tr></table></figure>
+<h6 id="Symbols"><a href="#Symbols" class="headerlink" title="Symbols"></a>Symbols</h6><p>一个符号对象表示在Dart程序中声明的操作符或标识。你可能不会需要使用这些符号，但是对于那些引用标识符名称的api来说，它们是很重要的，因为时常要改变的是标识符的名称，而不是标识符的符号<br>要获得标识符的符号，请使用符号文字#，后面跟着标识符<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#radix</span><br><span class="line">#bar</span><br></pre></td></tr></table></figure></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/02/Dart基础教程（一）/" rel="next" title="Dart基础教程（一）">
+                <i class="fa fa-chevron-left"></i> Dart基础教程（一）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/06/Dart基础教程（三）/" rel="prev" title="Dart基础教程（三）">
+                Dart基础教程（三） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#关键字"><span class="nav-number">1.</span> <span class="nav-text">关键字</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#变量"><span class="nav-number">2.</span> <span class="nav-text">变量</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#默认值"><span class="nav-number">3.</span> <span class="nav-text">默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#final-和-const"><span class="nav-number">4.</span> <span class="nav-text">final 和 const</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#内置类型"><span class="nav-number">5.</span> <span class="nav-text">内置类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Numbers"><span class="nav-number">6.</span> <span class="nav-text">Numbers</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#int"><span class="nav-number">6.0.1.</span> <span class="nav-text">int</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#double"><span class="nav-number">6.0.2.</span> <span class="nav-text">double</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Strings"><span class="nav-number">6.0.3.</span> <span class="nav-text">Strings</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Booleans"><span class="nav-number">6.0.4.</span> <span class="nav-text">Booleans</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Lists"><span class="nav-number">6.0.5.</span> <span class="nav-text">Lists</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Maps"><span class="nav-number">6.0.6.</span> <span class="nav-text">Maps</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Runes"><span class="nav-number">6.0.7.</span> <span class="nav-text">Runes</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Symbols"><span class="nav-number">6.0.8.</span> <span class="nav-text">Symbols</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>

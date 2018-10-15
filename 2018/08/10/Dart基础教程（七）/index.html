@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Dart," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="ClassesDart 是一种面向对象语言，包含类和基于 mixin 的继承两部分。每个对象都是类的实例，并且 Object 是所有类的父类。基于 mixin 的继承指的是每个类（除了 Object ）都只有一个父类，类体还可以在多个类继承中被重用。 Using class members(使用类成员)对象的成员由函数和数据（分别是方法和实例变量）组成，当你调用一个方法时，你在一个对象上调用它：这">
+<meta name="keywords" content="Dart">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Dart基础教程（七）">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/08/10/Dart基础教程（七）/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="ClassesDart 是一种面向对象语言，包含类和基于 mixin 的继承两部分。每个对象都是类的实例，并且 Object 是所有类的父类。基于 mixin 的继承指的是每个类（除了 Object ）都只有一个父类，类体还可以在多个类继承中被重用。 Using class members(使用类成员)对象的成员由函数和数据（分别是方法和实例变量）组成，当你调用一个方法时，你在一个对象上调用它：这">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T13:56:02.868Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Dart基础教程（七）">
+<meta name="twitter:description" content="ClassesDart 是一种面向对象语言，包含类和基于 mixin 的继承两部分。每个对象都是类的实例，并且 Object 是所有类的父类。基于 mixin 的继承指的是每个类（除了 Object ）都只有一个父类，类体还可以在多个类继承中被重用。 Using class members(使用类成员)对象的成员由函数和数据（分别是方法和实例变量）组成，当你调用一个方法时，你在一个对象上调用它：这">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/08/10/Dart基础教程（七）/"/>
+
+
+
+
+
+  <title>Dart基础教程（七） | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/08/10/Dart基础教程（七）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Dart基础教程（七）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-10T00:00:00+08:00">
+                2018-08-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Dart/" itemprop="url" rel="index">
+                    <span itemprop="name">Dart</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/10/Dart基础教程（七）/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/10/Dart基础教程（七）/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="Classes"><a href="#Classes" class="headerlink" title="Classes"></a>Classes</h4><p>Dart 是一种面向对象语言，包含类和基于 mixin 的继承两部分。每个对象都是类的实例，并且 Object 是所有类的父类。<br>基于 mixin 的继承指的是每个类（除了 Object ）都只有一个父类，类体还可以在多个类继承中被重用。</p>
+<h6 id="Using-class-members-使用类成员"><a href="#Using-class-members-使用类成员" class="headerlink" title="Using class members(使用类成员)"></a>Using class members(使用类成员)</h6><p>对象的成员由函数和数据（分别是方法和实例变量）组成，当你调用一个方法时，你在一个对象上调用它：这个方法可以访问该对象的函数和数据<br>使用逗号来引用实例变量或方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">var p = Point(2, 2);</span><br><span class="line"></span><br><span class="line">// 给y赋值</span><br><span class="line">p.y = 3;</span><br><span class="line"></span><br><span class="line">// 获取y的值</span><br><span class="line">assert(p.y == 3);</span><br><span class="line"></span><br><span class="line">// 调用 distanceTo()</span><br><span class="line">num distance = p.distanceTo(Point(4, 4));</span><br></pre></td></tr></table></figure>
+<p>用“?.”替代“.”来避免产生异常，当最左边的参数为null的时候：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">// 如果p 不是null, 将4赋值给y.</span><br><span class="line">p?.y = 4;</span><br></pre></td></tr></table></figure>
+<h6 id="Using-constructors-使用构造函数"><a href="#Using-constructors-使用构造函数" class="headerlink" title="Using constructors(使用构造函数)"></a>Using constructors(使用构造函数)</h6><p>要创建一个对象，构造函数名可以是ClassName或ClassName.identifier。例如，下面的例子用Point()和Point.fromJson()构造函数创建了Point对象:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var p1 = Point(2, 2);</span><br><span class="line">var p2 = Point.fromJson(&#123;&apos;x&apos;: 1, &apos;y&apos;: 2&#125;);</span><br></pre></td></tr></table></figure>
+<p>下面的代码具有相同的效果，但是在构造函数名之前使用可选的new关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var p1 = new Point(2, 2);</span><br><span class="line">var p2 = new Point.fromJson(&#123;&apos;x&apos;: 1, &apos;y&apos;: 2&#125;);</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：new关键字在Dart2里是可选的</span><br></pre></td></tr></table></figure>
+<p>一些类提供常量构造函数，要创建一个编译时用的常量构造函数，使用 const 关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var p = const ImmutablePoint(2, 2);</span><br></pre></td></tr></table></figure>
+<p>构造两个相同的编译时常量会导致一个单一的、规范的实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">var a = const ImmutablePoint(1, 1);</span><br><span class="line">var b = const ImmutablePoint(1, 1);</span><br><span class="line"></span><br><span class="line">assert(identical(a, b)); // 他们是相同的实例！</span><br></pre></td></tr></table></figure>
+<p>在一个常量上下文中(constant context)，您可以在构造器或字段之前省略const。例如，下面的代码创建一个常量map：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 带有const</span><br><span class="line">const pointAndLine = const &#123;</span><br><span class="line">  &apos;point&apos;: const [const ImmutablePoint(0, 0)],</span><br><span class="line">  &apos;line&apos;: const [const ImmutablePoint(1, 10), const ImmutablePoint(-2, 11)],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>除了第一个const关键字之外，您可以省略其它所有的const：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const pointAndLine = &#123;</span><br><span class="line">  &apos;point&apos;: [ImmutablePoint(0, 0)],</span><br><span class="line">  &apos;line&apos;: [ImmutablePoint(1, 10), ImmutablePoint(-2, 11)],</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在Dart2里面，常量上下文(constant context)中的const关键字是可选的</span><br></pre></td></tr></table></figure>
+<h6 id="Getting-an-object’s-type-获取对象的类型"><a href="#Getting-an-object’s-type-获取对象的类型" class="headerlink" title="Getting an object’s type(获取对象的类型)"></a>Getting an object’s type(获取对象的类型)</h6><p>为了在运行时获取对象类型，可以使用Object的runtimeType属性，它返回一个类型对象。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">print(&apos;The type of a is $&#123;a.runtimeType&#125;&apos;);</span><br></pre></td></tr></table></figure></p>
+<h6 id="Instance-variables-实例变量"><a href="#Instance-variables-实例变量" class="headerlink" title="Instance variables(实例变量)"></a>Instance variables(实例变量)</h6><p>下面是如何声明实例变量：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x; // Declare instance variable x, initially null.</span><br><span class="line">  num y; // Declare y, initially null.</span><br><span class="line">  num z = 0; // Declare z, initially 0.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>所有未初始化的实例变量都具有null值<br>所有实例变量都生成隐式getter方法，非final的实例变量也会产生隐式setter方法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x;</span><br><span class="line">  num y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var point = Point();</span><br><span class="line">  point.x = 4; // Use the setter method for x.</span><br><span class="line">  assert(point.x == 4); // Use the getter method for x.</span><br><span class="line">  assert(point.y == null); // Values default to null.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果初始化一个实例变量，当实例被创建时，它就被声明了（而不是在构造函数或方法中），值就设置了，这是在构造函数和它的初始化器列表执行之前的</p>
+<h6 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h6><p>要声明一个构造函数，只需创建一个与类同名的方法（或者加上一个额外的标识符命名构造函数的描述）。构造函数最常见的形式，就是自动生成的构造函数，下面创建一个类的新实例：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y;</span><br><span class="line"></span><br><span class="line">  Point(num x, num y) &#123;</span><br><span class="line">    //  有个更好的方法来实现。</span><br><span class="line">    this.x = x;</span><br><span class="line">    this.y = y;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>this 关键字是指当前实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：只有当名字冲突时才能使用 this。否则，Dart 会忽略 this 。</span><br></pre></td></tr></table></figure>
+<p>为一个实例变量分配一个构造函数参数的模式是很常见的，Dart有语法使它使用起来更容易：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x;</span><br><span class="line">  num y;</span><br><span class="line"></span><br><span class="line">  // 设置 x ， y 。</span><br><span class="line">  // 在构造函数运行之前。</span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="默认构造函数"><a href="#默认构造函数" class="headerlink" title="默认构造函数"></a>默认构造函数</h6><p>如果你不声明一个构造函数，系统会提供默认构造函数。默认构造函数没有参数，它将调用父类的无参数构造函数。</p>
+<h6 id="构造函数不能继承"><a href="#构造函数不能继承" class="headerlink" title="构造函数不能继承"></a>构造函数不能继承</h6><p>子类不继承父类的构造函数。子类只有默认构造函数。（无参数，没有名字的构造函数）。</p>
+<h6 id="命名构造函数"><a href="#命名构造函数" class="headerlink" title="命名构造函数"></a>命名构造函数</h6><p>使用命名构造函数可以为一个类声明多个构造函数，或者说是提供额外的声明：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y;</span><br><span class="line"></span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  // 命名构造函数</span><br><span class="line">  Point.origin() &#123;</span><br><span class="line">    x = 0;</span><br><span class="line">    y = 0;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>记住，构造函数不能继承，这意味着子类不会继承父类的构造函数。如果你希望子类在创建之后能够拥有在父类中声明的命名构造函数，你就必须在子类中实现该构造函数。</p>
+<h6 id="调用非默认的父类的构造函数"><a href="#调用非默认的父类的构造函数" class="headerlink" title="调用非默认的父类的构造函数"></a>调用非默认的父类的构造函数</h6><p>默认情况下，子类的构造函数将会调用父类的无参数构造函数。父类的构造函数在构造函数体的开头被调用。如果还使用了初始化列表，则在调用父类之前执行。总之，调用的顺序如下：</p>
+<ol>
+<li>初始化列表(initializer list)</li>
+<li>父类的无参构造函数(superclass’s no-arg constructor)</li>
+<li>主类的无参构造函数(main class’s no-arg constructor)</li>
+</ol>
+<p>如果父类没有未命名的无参构造函数，则必须手动的调用父类构造函数中的一个。在冒号(:)之后、构造函数体（如果有）之前指定父类的构造函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Person &#123;</span><br><span class="line">  String firstName;</span><br><span class="line"></span><br><span class="line">  Person.fromJson(Map data) &#123;</span><br><span class="line">    print(&apos;in Person&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Employee extends Person &#123;</span><br><span class="line">  // Person 没有默认构造函数;</span><br><span class="line">  // 必须调用 super.fromJson(data).</span><br><span class="line">  Employee.fromJson(Map data) : super.fromJson(data) &#123;</span><br><span class="line">    print(&apos;in Employee&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  var emp = new Employee.fromJson(&#123;&#125;);</span><br><span class="line"></span><br><span class="line">  // Prints:</span><br><span class="line">  // in Person</span><br><span class="line">  // in Employee</span><br><span class="line">  if (emp is Person) &#123;</span><br><span class="line">    // Type check</span><br><span class="line">    emp.firstName = &apos;Bob&apos;;</span><br><span class="line">  &#125;</span><br><span class="line">  (emp as Person).firstName = &apos;Bob&apos;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">输出：</span><br><span class="line">in Person</span><br><span class="line">in Employee</span><br></pre></td></tr></table></figure>
+<p>在调用父类构造函数前会检测参数，这个参数可以是一个表达式，如函数调用：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">class Employee extends Person &#123;</span><br><span class="line">  Employee() : super.fromJson(getDefaultData());</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：父类构造函数的参数不能访问 this 。例如，参数可调用静态方法但是不能调用实例方法。</span><br></pre></td></tr></table></figure>
+<h6 id="初始化列表"><a href="#初始化列表" class="headerlink" title="初始化列表"></a>初始化列表</h6><p>除了调用父类构造函数，你也可以在构造函数体运行之前初始化实例变量。用逗号隔开使其分别初始化。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x;</span><br><span class="line">  num y;</span><br><span class="line"></span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  // 初始化列表在构造函数运行前设置实例变量。</span><br><span class="line"></span><br><span class="line">  Point.fromJson(Map jsonMap)</span><br><span class="line">      : x = jsonMap[&apos;x&apos;],</span><br><span class="line">        y = jsonMap[&apos;y&apos;] &#123;</span><br><span class="line">    print(&apos;In Point.fromJson(): ($x, $y)&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注意：手边的初始化程序无法访问 this 关键字。</span><br></pre></td></tr></table></figure>
+<p>在开发期间，你可以使用初始化列表中的assert来验证输入。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Point.withAssert(this.x, this.y) : assert(x &gt;= 0) &#123;</span><br><span class="line">  print(&apos;In Point.withAssert(): ($x, $y)&apos;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>设置final字段时，初始化程序列表很方便，下面的例子在初始化列表里初始化了三个final字段：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">import &apos;dart:math&apos;;</span><br><span class="line"></span><br><span class="line">class Point &#123;</span><br><span class="line">  final num x;</span><br><span class="line">  final num y;</span><br><span class="line">  final num distanceFromOrigin;</span><br><span class="line"></span><br><span class="line">  Point(x, y)</span><br><span class="line">      : x = x,</span><br><span class="line">        y = y,</span><br><span class="line">        distanceFromOrigin = sqrt(x * x + y * y);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  var p = new Point(2, 3);</span><br><span class="line">  print(p.distanceFromOrigin);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输出:</span><br><span class="line">3.605551275463989</span><br></pre></td></tr></table></figure>
+<h6 id="重定向构造函数"><a href="#重定向构造函数" class="headerlink" title="重定向构造函数"></a>重定向构造函数</h6><p>有时一个构造函数的目的只是重定向到同一个类中的另一个构造函数。如果一个重定向的构造函数的主体为空，那么调用这个构造函数的时候，直接在冒号后面调用这个构造函数即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Point &#123;</span><br><span class="line">  num x, y;</span><br><span class="line"></span><br><span class="line">  // 主构造函数</span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  // 代表住构造函数</span><br><span class="line">  Point.alongXAxis(num x) : this(x, 0);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="常量构造函数-静态构造函数"><a href="#常量构造函数-静态构造函数" class="headerlink" title="常量构造函数/静态构造函数"></a>常量构造函数/静态构造函数</h6><p>如果你的类产生的对象永远不会改变，你可以让这些对象成为编译时常量。为此，需要定义一个 const 构造函数并确保所有的实例变量都是 final 的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class ImmutablePoint &#123;</span><br><span class="line">  static final ImmutablePoint origin =</span><br><span class="line">      const ImmutablePoint(0, 0);</span><br><span class="line"></span><br><span class="line">  final num x, y;</span><br><span class="line"></span><br><span class="line">  const ImmutablePoint(this.x, this.y);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="工厂构造函数"><a href="#工厂构造函数" class="headerlink" title="工厂构造函数"></a>工厂构造函数</h6><p>当实现一个使用 factory 关键词修饰的构造函数时，这个构造函数不必创建类的新实例。例如，工厂构造函数可能从缓存返回实例，或者它可能返回子类型的实例。 下面的示例演示一个工厂构造函数从缓存返回的对象：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">class Logger &#123;</span><br><span class="line">  final String name;</span><br><span class="line">  bool mute = false;</span><br><span class="line"></span><br><span class="line">  //名字前有个 _， _cache 是私有的</span><br><span class="line">  static final Map&lt;String, Logger&gt; _cache =</span><br><span class="line">      &lt;String, Logger&gt;&#123;&#125;;</span><br><span class="line"></span><br><span class="line">  factory Logger(String name) &#123;</span><br><span class="line">    if (_cache.containsKey(name)) &#123;</span><br><span class="line">      return _cache[name];</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      final logger = new Logger._internal(name);</span><br><span class="line">      _cache[name] = logger;</span><br><span class="line">      return logger;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Logger._internal(this.name);</span><br><span class="line"></span><br><span class="line">  void log(String msg) &#123;</span><br><span class="line">    if (!mute) &#123;</span><br><span class="line">      print(msg);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：工厂构造函数不能用 this</span><br></pre></td></tr></table></figure>
+<p>调用一个工厂构造函数，你需要使用 new 关键字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var logger = new Logger(&apos;UI&apos;);</span><br><span class="line">logger.log(&apos;Button clicked&apos;);</span><br></pre></td></tr></table></figure>
+<h6 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h6><p>方法就是为对象提供行为的函数。</p>
+<h6 id="实例方法"><a href="#实例方法" class="headerlink" title="实例方法"></a>实例方法</h6><p>对象的实例方法可以访问实例变量和 this，以下示例中的 distanceTo() 方法是实例方法的一个例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import &apos;dart:math&apos;;</span><br><span class="line"></span><br><span class="line">class Point &#123;</span><br><span class="line">  num x;</span><br><span class="line">  num y;</span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  num distanceTo(Point other) &#123;</span><br><span class="line">    var dx = x - other.x;</span><br><span class="line">    var dy = y - other.y;</span><br><span class="line">    return sqrt(dx * dx + dy * dy);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="Getters-and-setters"><a href="#Getters-and-setters" class="headerlink" title="Getters and setters"></a>Getters and setters</h6><p>是一种提供对方法属性读和写的特殊方法。每个实例变量都有一个隐式的 getter 方法，合适的话可能还会有 setter 方法。你可以通过实现 getters 和 setters 来创建附加属性，也就是直接使用 get 和 set 关键词：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">class Rectangle &#123;</span><br><span class="line">  num left;</span><br><span class="line">  num top;</span><br><span class="line">  num width;</span><br><span class="line">  num height;</span><br><span class="line"></span><br><span class="line">  Rectangle(this.left, this.top, this.width, this.height);</span><br><span class="line"></span><br><span class="line">  // 定义两个计算属性: right and bottom.</span><br><span class="line">  num get right             =&gt; left + width;</span><br><span class="line">      set right(num value)  =&gt; left = value - width;</span><br><span class="line">  num get bottom            =&gt; top + height;</span><br><span class="line">      set bottom(num value) =&gt; top = value - height;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">main() &#123;</span><br><span class="line">  var rect = new Rectangle(3, 4, 20, 15);</span><br><span class="line">  assert(rect.left == 3);</span><br><span class="line">  rect.right = 12;</span><br><span class="line">  assert(rect.left == -8);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>借助于 getter 和 setter ，你可以直接使用实例变量，并且在不改变客户代码的情况下把他们包装成方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：不论是否显式地定义了一个 getter，类似增量（++）的操作符，都能以预期的方式工作。为了避免产生任何向着不期望的方向的影响，操作符一旦调用 getter ，就会把他的值存在临时变量里。</span><br></pre></td></tr></table></figure>
+<h6 id="抽象方法"><a href="#抽象方法" class="headerlink" title="抽象方法"></a>抽象方法</h6><p>Instance，getter和setter方法可以是抽象的，也就是定义一个接口，但将其实现留给其他类。 抽象方法只能存在于抽象类中。<br>要创建一个抽象方法，使用分号(;)代替方法体：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">abstract class Doer &#123;</span><br><span class="line">  // 定义实例变量和方法</span><br><span class="line"></span><br><span class="line">  void doSomething(); // 定义一个抽象方法</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class EffectiveDoer extends Doer &#123;</span><br><span class="line">  void doSomething() &#123;</span><br><span class="line">    // 提供一个实现，所以这里的方法不是抽象的</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用抽象方法会导致运行时错误</p>
+<h6 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h6><p>使用 abstract 修饰符来定义一个抽象类，该类不能被实例化。抽象类在定义接口的时候非常有用，实际上抽象中经常也包含一些实现。如果你想让你的抽象类被实例化，请定义一个 工厂构造函数<br>抽象类通常包含 抽象方法。下面是声明一个含有抽象方法的抽象类的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 这个类是抽象类，不能被实例化</span><br><span class="line">abstract class AbstractContainer &#123;</span><br><span class="line">  // Define constructors, fields, methods...</span><br><span class="line"></span><br><span class="line">  void updateChildren(); // 抽象方法.</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="隐式接口"><a href="#隐式接口" class="headerlink" title="隐式接口"></a>隐式接口</h6><p>每个类隐式的定义了一个接口，含有类的所有实例和它实现的所有接口。如果你想创建一个支持类 B 的 API 的类 A，但又不想继承类 B ，那么，类 A 应该实现类 B 的接口。<br>一个类实现一个或更多接口通过用 implements 子句声明，然后提供 API 接口要求。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// person 包含 greet() 的隐式接口。</span><br><span class="line">class Person &#123;</span><br><span class="line">  // In the interface, but visible only in this library.</span><br><span class="line">  final _name;</span><br><span class="line"></span><br><span class="line">  // 不在接口中，因为这是个构造函数。</span><br><span class="line">  Person(this._name);</span><br><span class="line"></span><br><span class="line">  // In the interface.</span><br><span class="line">  String greet(String who) =&gt; &apos;Hello, $who. I am $_name.&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// Person 接口的一个实现</span><br><span class="line">class Impostor implements Person &#123;</span><br><span class="line">  get _name =&gt; &apos;&apos;;</span><br><span class="line"></span><br><span class="line">  String greet(String who) =&gt; &apos;Hi $who. Do you know who I am?&apos;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">String greetBob(Person person) =&gt; person.greet(&apos;Bob&apos;);</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  print(greetBob(Person(&apos;Kathy&apos;)));</span><br><span class="line">  print(greetBob(Impostor()));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里是具体说明一个类实现多个接口的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">class Point implements Comparable, Location &#123;...&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="扩展一个类"><a href="#扩展一个类" class="headerlink" title="扩展一个类"></a>扩展一个类</h6><p>使用 extends 创建一个子类，同时 supper 将指向父类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">class Television &#123;</span><br><span class="line">  void turnOn() &#123;</span><br><span class="line">    _illuminateDisplay();</span><br><span class="line">    _activateIrSensor();</span><br><span class="line">  &#125;</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class SmartTelevision extends Television &#123;</span><br><span class="line">  void turnOn() &#123;</span><br><span class="line">    super.turnOn();</span><br><span class="line">    _bootNetworkInterface();</span><br><span class="line">    _initializeMemory();</span><br><span class="line">    _upgradeApps();</span><br><span class="line">  &#125;</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="Override"><a href="#Override" class="headerlink" title="Override"></a>Override</h6><p>子类可以重写实例方法， getters 方法， setters 方法。你可以使用 @override 注释来表明你重写了一个成员：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">class SmartTelevision extends Television &#123;</span><br><span class="line">  @override</span><br><span class="line">  void turnOn() &#123;...&#125;</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要在类型安全的代码中缩小方法参数或实例变量的类型，可以使用covariant关键字</p>
+<h6 id="重载操作符"><a href="#重载操作符" class="headerlink" title="重载操作符"></a>重载操作符</h6><p>你可以重写在下表中列出的操作符。例如，如果你定义了一个向量(Vector)类，你可以定义一个 + 方法来加两个向量。</p>
+<p><html></html></p>
+<p><table class="table"><br>  <tbody><br>    <tr><br>      <td><code class="highlighter-rouge">&lt;</code></td><br>      <td><code class="highlighter-rouge">+</code></td><br>      <td><code class="highlighter-rouge">|</code></td><br>      <td><code class="highlighter-rouge">[]</code></td><br>    </tr><br>    <tr><br>      <td><code class="highlighter-rouge">&gt;</code></td><br>      <td><code class="highlighter-rouge">/</code></td><br>      <td><code class="highlighter-rouge">^</code></td><br>      <td><code class="highlighter-rouge">[]=</code></td><br>    </tr><br>    <tr><br>      <td><code class="highlighter-rouge">&lt;=</code></td><br>      <td><code class="highlighter-rouge">~/</code></td><br>      <td><code class="highlighter-rouge">&amp;</code></td><br>      <td><code class="highlighter-rouge">~</code></td><br>    </tr><br>    <tr><br>      <td><code class="highlighter-rouge">&gt;=</code></td><br>      <td><code class="highlighter-rouge">*</code></td><br>      <td><code class="highlighter-rouge">&lt;&lt;</code></td><br>      <td><code class="highlighter-rouge">==</code></td><br>    </tr><br>    <tr><br>      <td><code class="highlighter-rouge">–</code></td><br>      <td><code class="highlighter-rouge">%</code></td><br>      <td><code class="highlighter-rouge">&gt;&gt;</code></td><br>      <td>&nbsp;</td><br>    </tr><br>  </tbody><br></table><br><br>以下是一个类中重写 + 和 - 操作符的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">class Vector &#123;</span><br><span class="line">  final int x, y;</span><br><span class="line"></span><br><span class="line">  Vector(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  Vector operator +(Vector v) =&gt; Vector(x + v.x, y + v.y);</span><br><span class="line">  Vector operator -(Vector v) =&gt; Vector(x - v.x, y - v.y);</span><br><span class="line"></span><br><span class="line">  // Operator == and hashCode not shown. For details, see note below.</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  final v = Vector(2, 3);</span><br><span class="line">  final w = Vector(2, 2);</span><br><span class="line"></span><br><span class="line">  assert(v + w == Vector(4, 5));</span><br><span class="line">  assert(v - w == Vector(0, 1));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你重写了 == ，你也应该重写对象中 hashCode 的 getter 方法。</p>
+<h6 id="noSuchMethod"><a href="#noSuchMethod" class="headerlink" title="noSuchMethod()"></a>noSuchMethod()</h6><p>当使用不存在的方法或实例变量时，要检测或作出反应,我们可以重写noSuchMethod():</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class A &#123;</span><br><span class="line">  // Unless you override noSuchMethod, using a</span><br><span class="line">  // non-existent member results in a NoSuchMethodError.</span><br><span class="line">  @override</span><br><span class="line">  void noSuchMethod(Invocation invocation) &#123;</span><br><span class="line">    print(&apos;You tried to use a non-existent member: &apos; +</span><br><span class="line">        &apos;$&#123;invocation.memberName&#125;&apos;);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="枚举类型"><a href="#枚举类型" class="headerlink" title="枚举类型"></a>枚举类型</h6><p>枚举类型，通常被称为 enumerations 或 enums ，是一种用来代表一个固定数量的常量的特殊类。</p>
+<h6 id="使用枚举"><a href="#使用枚举" class="headerlink" title="使用枚举"></a>使用枚举</h6><p>用enum关键字来定义枚举类型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">enum Color &#123; red, green, blue &#125;</span><br></pre></td></tr></table></figure>
+<p>在枚举中每个值都有一个 index getter 方法，它返回一个在枚举声明中从 0 开始的位置的值。例如，第一个值索引值为 0 ，第二个值索引值为 1 。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assert(Color.red.index == 0);</span><br><span class="line">assert(Color.green.index == 1);</span><br><span class="line">assert(Color.blue.index == 2);</span><br></pre></td></tr></table></figure>
+<p>要得到枚举列表的所有值，可使用枚举的 values 常量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Color&gt; colors = Color.values;</span><br><span class="line">assert(colors[2] == Color.blue);</span><br></pre></td></tr></table></figure>
+<p>你可以在 switch 语句 中使用枚举。如果 e 在 switch (e) 是显式类型的枚举，那么如果你不处理所有的枚举值将会弹出警告：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">var aColor = Color.blue;</span><br><span class="line"></span><br><span class="line">switch (aColor) &#123;</span><br><span class="line">  case Color.red:</span><br><span class="line">    print(&apos;Red as roses!&apos;);</span><br><span class="line">    break;</span><br><span class="line">  case Color.green:</span><br><span class="line">    print(&apos;Green as grass!&apos;);</span><br><span class="line">    break;</span><br><span class="line">  default: // Without this, you see a WARNING.</span><br><span class="line">    print(aColor); // &apos;Color.blue&apos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="枚举类型有以下限制"><a href="#枚举类型有以下限制" class="headerlink" title="枚举类型有以下限制"></a>枚举类型有以下限制</h6><ul>
+<li>你不能在子类中混合或实现一个枚举。</li>
+<li>你不能显式实例化一个枚举。</li>
+</ul>
+<h6 id="为类添加特征：mixins"><a href="#为类添加特征：mixins" class="headerlink" title="为类添加特征：mixins"></a>为类添加特征：mixins</h6><p>Mixins是一种在多个类层次结构中重用类代码的方法。<br>要使用mixin，请使用with关键字，后跟一个或多个mixin名称，以下示例显示了两个使用mixins的类：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class Musician extends Performer with Musical &#123;</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Maestro extends Person</span><br><span class="line">    with Musical, Aggressive, Demented &#123;</span><br><span class="line">  Maestro(String maestroName) &#123;</span><br><span class="line">    name = maestroName;</span><br><span class="line">    canConduct = true;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>要实现 mixin ，就创建一个继承 Object 类的子类，不声明任何构造函数，不调用 super 。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">abstract class Musical &#123;</span><br><span class="line">  bool canPlayPiano = false;</span><br><span class="line">  bool canCompose = false;</span><br><span class="line">  bool canConduct = false;</span><br><span class="line"></span><br><span class="line">  void entertainMe() &#123;</span><br><span class="line">    if (canPlayPiano) &#123;</span><br><span class="line">      print(&apos;Playing piano&apos;);</span><br><span class="line">    &#125; else if (canConduct) &#123;</span><br><span class="line">      print(&apos;Waving hands&apos;);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      print(&apos;Humming to self&apos;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="类的变量和方法"><a href="#类的变量和方法" class="headerlink" title="类的变量和方法"></a>类的变量和方法</h6><p>使用 static 关键字来实现类变量和类方法。</p>
+<h6 id="静态变量"><a href="#静态变量" class="headerlink" title="静态变量"></a>静态变量</h6><p>静态变量（类变量）对于类范围的状态和常量很有用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Queue &#123;</span><br><span class="line">  static const initialCapacity = 16;</span><br><span class="line">  // ···</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  assert(Queue.initialCapacity == 16);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h6 id="静态方法"><a href="#静态方法" class="headerlink" title="静态方法"></a>静态方法</h6><p>静态方法（类方法）不对实例进行操作，因此无法访问this，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">import &apos;dart:math&apos;;</span><br><span class="line"></span><br><span class="line">class Point &#123;</span><br><span class="line">  num x, y;</span><br><span class="line">  Point(this.x, this.y);</span><br><span class="line"></span><br><span class="line">  static num distanceBetween(Point a, Point b) &#123;</span><br><span class="line">    var dx = a.x - b.x;</span><br><span class="line">    var dy = a.y - b.y;</span><br><span class="line">    return sqrt(dx * dx + dy * dy);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void main() &#123;</span><br><span class="line">  var a = Point(2, 2);</span><br><span class="line">  var b = Point(4, 4);</span><br><span class="line">  var distance = Point.distanceBetween(a, b);</span><br><span class="line">  assert(2.8 &lt; distance &amp;&amp; distance &lt; 2.9);</span><br><span class="line">  print(distance);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">注：对于常见或广泛使用的实用程序和功能，请考虑使用顶级函数而不是静态方法</span><br></pre></td></tr></table></figure>
+<p>你可以将静态方法作为编译时常量。例如，你可以把静态方法作为一个参数传递给静态构造函数。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Dart/" rel="tag"># Dart</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/08/09/Dart基础教程（五）/" rel="next" title="Dart基础教程（五）">
+                <i class="fa fa-chevron-left"></i> Dart基础教程（五）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/13/Dart基础教程（八）/" rel="prev" title="Dart基础教程（八）">
+                Dart基础教程（八） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Classes"><span class="nav-number">1.</span> <span class="nav-text">Classes</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-class-members-使用类成员"><span class="nav-number">1.0.1.</span> <span class="nav-text">Using class members(使用类成员)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Using-constructors-使用构造函数"><span class="nav-number">1.0.2.</span> <span class="nav-text">Using constructors(使用构造函数)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Getting-an-object’s-type-获取对象的类型"><span class="nav-number">1.0.3.</span> <span class="nav-text">Getting an object’s type(获取对象的类型)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Instance-variables-实例变量"><span class="nav-number">1.0.4.</span> <span class="nav-text">Instance variables(实例变量)</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#构造方法"><span class="nav-number">1.0.5.</span> <span class="nav-text">构造方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#默认构造函数"><span class="nav-number">1.0.6.</span> <span class="nav-text">默认构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#构造函数不能继承"><span class="nav-number">1.0.7.</span> <span class="nav-text">构造函数不能继承</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#命名构造函数"><span class="nav-number">1.0.8.</span> <span class="nav-text">命名构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#调用非默认的父类的构造函数"><span class="nav-number">1.0.9.</span> <span class="nav-text">调用非默认的父类的构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#初始化列表"><span class="nav-number">1.0.10.</span> <span class="nav-text">初始化列表</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#重定向构造函数"><span class="nav-number">1.0.11.</span> <span class="nav-text">重定向构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#常量构造函数-静态构造函数"><span class="nav-number">1.0.12.</span> <span class="nav-text">常量构造函数/静态构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#工厂构造函数"><span class="nav-number">1.0.13.</span> <span class="nav-text">工厂构造函数</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#方法"><span class="nav-number">1.0.14.</span> <span class="nav-text">方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#实例方法"><span class="nav-number">1.0.15.</span> <span class="nav-text">实例方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Getters-and-setters"><span class="nav-number">1.0.16.</span> <span class="nav-text">Getters and setters</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#抽象方法"><span class="nav-number">1.0.17.</span> <span class="nav-text">抽象方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#抽象类"><span class="nav-number">1.0.18.</span> <span class="nav-text">抽象类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#隐式接口"><span class="nav-number">1.0.19.</span> <span class="nav-text">隐式接口</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#扩展一个类"><span class="nav-number">1.0.20.</span> <span class="nav-text">扩展一个类</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#Override"><span class="nav-number">1.0.21.</span> <span class="nav-text">Override</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#重载操作符"><span class="nav-number">1.0.22.</span> <span class="nav-text">重载操作符</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#noSuchMethod"><span class="nav-number">1.0.23.</span> <span class="nav-text">noSuchMethod()</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#枚举类型"><span class="nav-number">1.0.24.</span> <span class="nav-text">枚举类型</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#使用枚举"><span class="nav-number">1.0.25.</span> <span class="nav-text">使用枚举</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#枚举类型有以下限制"><span class="nav-number">1.0.26.</span> <span class="nav-text">枚举类型有以下限制</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#为类添加特征：mixins"><span class="nav-number">1.0.27.</span> <span class="nav-text">为类添加特征：mixins</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#类的变量和方法"><span class="nav-number">1.0.28.</span> <span class="nav-text">类的变量和方法</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#静态变量"><span class="nav-number">1.0.29.</span> <span class="nav-text">静态变量</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#静态方法"><span class="nav-number">1.0.30.</span> <span class="nav-text">静态方法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
