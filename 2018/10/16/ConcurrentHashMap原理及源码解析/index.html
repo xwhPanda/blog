@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="ConcurrentHashMap," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="以下源码基于JDK1.8,与JDK1.7有所不同 基本结构table数组＋单向链表＋红黑树的结构，在链表节点数量大于8时，会将链表转化为红黑树进行存储。  基本字段123456789101112131415161718192021222324252627282930313233343536373839404142434445//table最大长度private static final int M">
+<meta name="keywords" content="ConcurrentHashMap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="HashMap原理及源码解析">
+<meta property="og:url" content="http://www.aichimoyu.info/2018/10/16/ConcurrentHashMap原理及源码解析/index.html">
+<meta property="og:site_name" content="爱吃墨鱼">
+<meta property="og:description" content="以下源码基于JDK1.8,与JDK1.7有所不同 基本结构table数组＋单向链表＋红黑树的结构，在链表节点数量大于8时，会将链表转化为红黑树进行存储。  基本字段123456789101112131415161718192021222324252627282930313233343536373839404142434445//table最大长度private static final int M">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/36EBA1739DD74B9199424E1E08025DA4?method=download&shareKey=267b316d9d0a160abdc30e5f64f4250b">
+<meta property="og:image" content="https://note.youdao.com/yws/api/personal/file/7FBDD2BE8915442E820EE3034F75FAE1?method=download&shareKey=1ce2d26e43c48c9a814d23fcde6d8abc">
+<meta property="og:updated_time" content="2018-10-27T06:46:02.168Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="HashMap原理及源码解析">
+<meta name="twitter:description" content="以下源码基于JDK1.8,与JDK1.7有所不同 基本结构table数组＋单向链表＋红黑树的结构，在链表节点数量大于8时，会将链表转化为红黑树进行存储。  基本字段123456789101112131415161718192021222324252627282930313233343536373839404142434445//table最大长度private static final int M">
+<meta name="twitter:image" content="https://note.youdao.com/yws/api/personal/file/36EBA1739DD74B9199424E1E08025DA4?method=download&shareKey=267b316d9d0a160abdc30e5f64f4250b">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://www.aichimoyu.info/2018/10/16/ConcurrentHashMap原理及源码解析/"/>
+
+
+
+
+
+  <title>HashMap原理及源码解析 | 爱吃墨鱼</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">爱吃墨鱼</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/首页/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/关于" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://www.aichimoyu.info/2018/10/16/ConcurrentHashMap原理及源码解析/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="爱吃墨鱼">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="爱吃墨鱼">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">HashMap原理及源码解析</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-16T00:00:00+08:00">
+                2018-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Android/" itemprop="url" rel="index">
+                    <span itemprop="name">Android</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/16/ConcurrentHashMap原理及源码解析/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/16/ConcurrentHashMap原理及源码解析/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><strong>以下源码基于JDK1.8,与JDK1.7有所不同</strong></p>
+<h1 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h1><p>table数组＋单向链表＋红黑树的结构，在链表节点数量大于8时，会将链表转化为红黑树进行存储。</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/36EBA1739DD74B9199424E1E08025DA4?method=download&amp;shareKey=267b316d9d0a160abdc30e5f64f4250b" alt="ConcurrentHashMap结构"></p>
+<h1 id="基本字段"><a href="#基本字段" class="headerlink" title="基本字段"></a>基本字段</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">//table最大长度</span><br><span class="line">private static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;</span><br><span class="line">//table默认长度</span><br><span class="line">private static final int DEFAULT_CAPACITY = 16;</span><br><span class="line">//红黑树转链表的阀值，当链表长度&lt;=6时转为链表（扩容时）。</span><br><span class="line">static final int TREEIFY_THRESHOLD = 8;</span><br><span class="line">//在哈希表扩容时，如果发现链表长度小于 6，则会由树重新退化为链表。</span><br><span class="line">static final int UNTREEIFY_THRESHOLD = 6;</span><br><span class="line">//在转变成树之前，还会有一次判断，只有键值对数量大于 64 才会发生转换。这是为了避免在哈希表建立初期，多个键值对恰好被放入了同一个链表中而导致不必要的转化</span><br><span class="line">static final int MIN_TREEIFY_CAPACITY = 64;</span><br><span class="line">//扩容时任务的最小转移节点数</span><br><span class="line">private static final int MIN_TRANSFER_STRIDE = 16;</span><br><span class="line">//sizeCtl中记录stamp的位数</span><br><span class="line">private static int RESIZE_STAMP_BITS = 16;</span><br><span class="line">//进行扩容所允许的最大线程数</span><br><span class="line">private static final int MAX_RESIZERS = (1 &lt;&lt; (32 - RESIZE_STAMP_BITS)) - 1;</span><br><span class="line">//记录sizeCtl中的大小所需要进行的偏移位数</span><br><span class="line">private static final int RESIZE_STAMP_SHIFT = 32 - RESIZE_STAMP_BITS;</span><br><span class="line">static final int MOVED     = 0x8fffffff; // (-1) 结点扩容时，设置的占位结点的hash值</span><br><span class="line">static final int TREEBIN   = 0x80000000; // 链表已经转化为了红黑树，根节点的hash值</span><br><span class="line">static final int RESERVED  = 0x80000001; // hash for transient reservations</span><br><span class="line">static final int HASH_BITS = 0x7fffffff; // 正常节点哈希的可用位，即为int的最大值：2的31次幂-1</span><br><span class="line">//进行序列化的属性</span><br><span class="line">private static final ObjectStreamField[] serialPersistentFields = &#123;</span><br><span class="line">    new ObjectStreamField(&quot;segments&quot;, Segment[].class),</span><br><span class="line">    new ObjectStreamField(&quot;segmentMask&quot;, Integer.TYPE),</span><br><span class="line">    new ObjectStreamField(&quot;segmentShift&quot;, Integer.TYPE)</span><br><span class="line">&#125;;</span><br><span class="line">//volatile字段修饰table，保证对table[i]的修改对其他线程是可见的</span><br><span class="line">//线程安全的三条性质：原子性，有序性，可见性（volatile保证可见性）</span><br><span class="line">transient volatile Node&lt;K,V&gt;[] table;</span><br><span class="line">//sizeCtl用于table[]的初始化和扩容操作，不同值的代表状态如下：</span><br><span class="line">//-1：table[]正在初始化。</span><br><span class="line">//-N：表示有N-1个线程正在进行扩容操作。</span><br><span class="line">// 非负情况：</span><br><span class="line">//如果table[]未初始化，则表示table需要初始化的大小。</span><br><span class="line">//如果初始化完成，则表示table[]扩容的阀值，默认是table[]容量的0.75 倍。</span><br><span class="line">private transient volatile int sizeCtl;</span><br><span class="line">//扩容时用到，初始时为table.length，表示从索引 0 到transferIndex的节点还未转移</span><br><span class="line">private transient volatile int transferIndex;</span><br><span class="line">//调整大小和/或创建CounterCell时使用的Spinlock（通过CAS锁定）</span><br><span class="line">//旋转锁</span><br><span class="line">private transient volatile int cellsBusy;</span><br><span class="line">//计数器表。当非null时，size是2的幂</span><br><span class="line">private transient volatile CounterCell[] counterCells;</span><br></pre></td></tr></table></figure>
+<h1 id="ForwardingNode"><a href="#ForwardingNode" class="headerlink" title="ForwardingNode"></a>ForwardingNode</h1><p>扩容时用的占位节点<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">static final class ForwardingNode&lt;K,V&gt; extends Node&lt;K,V&gt; &#123;</span><br><span class="line">        final Node&lt;K,V&gt;[] nextTable;</span><br><span class="line">        ForwardingNode(Node&lt;K,V&gt;[] tab) &#123;</span><br><span class="line">            //ForwardingNode的属性固定，hash值为MOVED</span><br><span class="line">            super(MOVED, null, null, null);</span><br><span class="line">            this.nextTable = tab;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h1><p>我们一般初始化时用的都是无参构造方法，这里稍微了解一下有参构造方法ConcurrentHashMap(int initialCapacity)：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public ConcurrentHashMap(int initialCapacity) &#123;</span><br><span class="line">        if (initialCapacity &lt; 0)</span><br><span class="line">            throw new IllegalArgumentException();</span><br><span class="line">        int cap = ((initialCapacity &gt;= (MAXIMUM_CAPACITY &gt;&gt;&gt; 1)) ?</span><br><span class="line">                   MAXIMUM_CAPACITY :tableSizeFor(initialCapacity + (initialCapacity &gt;&gt;&gt; 1) + 1));</span><br><span class="line">        this.sizeCtl = cap;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>主要是初始化了sizeCtl，关键的是tableSizeFor方法，这个方法是返回一个不小于initialCapacity的2的次方作为table的大小，至于为什么table的大小要为2的倍数，在<a href="http://www.aichimoyu.info/2018/10/11/HashMap原理及源码解析/#more">HashMap原理及源码解析</a>里面有说明。</p>
+<h1 id="put方法详解"><a href="#put方法详解" class="headerlink" title="put方法详解"></a>put方法详解</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line">public V put(K key, V value) &#123;</span><br><span class="line">        return putVal(key, value, false);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">final V putVal(K key, V value, boolean onlyIfAbsent) &#123;</span><br><span class="line">        //键和值都不能为空</span><br><span class="line">        if (key == null || value == null) throw new NullPointerException();</span><br><span class="line">        //获取hash值</span><br><span class="line">        int hash = spread(key.hashCode());</span><br><span class="line">        int binCount = 0;</span><br><span class="line">        for (Node&lt;K,V&gt;[] tab = table;;) &#123;</span><br><span class="line">            //f:table[i]的值，n：table长度，i：计算出来的数组下标，fh：f的hash值</span><br><span class="line">            Node&lt;K,V&gt; f; int n, i, fh;</span><br><span class="line">            //表为空或者表长度为0</span><br><span class="line">            if (tab == null || (n = tab.length) == 0)</span><br><span class="line">                //初始化表</span><br><span class="line">                tab = initTable();</span><br><span class="line">            //table对应下标i的值为空</span><br><span class="line">            else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">                //实例化一个Node放到table[i]中</span><br><span class="line">                if (casTabAt(tab, i, null, new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                    break;                   // no lock when adding to empty bin</span><br><span class="line">            &#125;</span><br><span class="line">            //该节点正在扩容，那么当前线程帮助扩容</span><br><span class="line">            else if ((fh = f.hash) == MOVED)</span><br><span class="line">                //扩容</span><br><span class="line">                tab = helpTransfer(tab, f);</span><br><span class="line">            else &#123;</span><br><span class="line">                V oldVal = null;</span><br><span class="line">                //获取数组该位置的头结点的监视器锁(分段锁的体现)</span><br><span class="line">                synchronized (f) &#123;</span><br><span class="line">                    if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                        if (fh &gt;= 0) &#123;//头结点的hash值大于0，说明是链表</span><br><span class="line">                            binCount = 1;</span><br><span class="line">                            //遍历链表</span><br><span class="line">                            for (Node&lt;K,V&gt; e = f;; ++binCount) &#123;</span><br><span class="line">                                K ek;</span><br><span class="line">                                //如果key相等，就覆盖值</span><br><span class="line">                                if (e.hash == hash &amp;&amp;</span><br><span class="line">                                    ((ek = e.key) == key ||</span><br><span class="line">                                     (ek != null &amp;&amp; key.equals(ek)))) &#123;</span><br><span class="line">                                    oldVal = e.val;</span><br><span class="line">                                    if (!onlyIfAbsent)</span><br><span class="line">                                        e.val = value;</span><br><span class="line">                                    break;</span><br><span class="line">                                &#125;</span><br><span class="line">                                //将新的值加链表的末尾</span><br><span class="line">                                Node&lt;K,V&gt; pred = e;</span><br><span class="line">                                if ((e = e.next) == null) &#123;</span><br><span class="line">                                    pred.next = new Node&lt;K,V&gt;(hash, key,</span><br><span class="line">                                                              value, null);</span><br><span class="line">                                    break;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                        else if (f instanceof TreeBin) &#123;//红黑树</span><br><span class="line">                            Node&lt;K,V&gt; p;</span><br><span class="line">                            binCount = 2;</span><br><span class="line">                            //调用红黑树的插值方法，如果这个key已经存在，则更新，不存在则插入</span><br><span class="line">                            if ((p = ((TreeBin&lt;K,V&gt;)f).putTreeVal(hash, key,</span><br><span class="line">                                                           value)) != null) &#123;</span><br><span class="line">                                oldVal = p.val;</span><br><span class="line">                                if (!onlyIfAbsent)</span><br><span class="line">                                    p.val = value;</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                if (binCount != 0) &#123;</span><br><span class="line">                    //如果链表数量到了转成红黑树的临界值，将链表转为红黑树</span><br><span class="line">                    if (binCount &gt;= TREEIFY_THRESHOLD)</span><br><span class="line">                        treeifyBin(tab, i);</span><br><span class="line">                    if (oldVal != null)</span><br><span class="line">                        return oldVal;</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        addCount(1L, binCount);</span><br><span class="line">        return null;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="初始化表initTable"><a href="#初始化表initTable" class="headerlink" title="初始化表initTable"></a>初始化表initTable</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">private final Node&lt;K,V&gt;[] initTable() &#123;</span><br><span class="line">        Node&lt;K,V&gt;[] tab; int sc;</span><br><span class="line">        while ((tab = table) == null || tab.length == 0) &#123;</span><br><span class="line">            //sizeCtl&lt;0表示有其他线程正在进行初始化操作，把线程挂起。对于table的初始化工作，只能有一个线程在进行</span><br><span class="line">            if ((sc = sizeCtl) &lt; 0)</span><br><span class="line">                Thread.yield(); // lost initialization race; just spin</span><br><span class="line">            //CAS算法的过程是这样：它包含三个参数 CAS（V,E,N）。V表示要更新的变量，E表示预期的值，N表示新值</span><br><span class="line">            //这里就是要改sizeCtl，现在我们知道的sizeCtl值为sc，如果相等，则将sizeCtl赋值为-1，如果不相等，则说明被其它线程改过</span><br><span class="line">            else if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) &#123;</span><br><span class="line">                try &#123;</span><br><span class="line">                    if ((tab = table) == null || tab.length == 0) &#123;</span><br><span class="line">                        //sc为0就用默认大小DEFAULT_CAPACITY 16</span><br><span class="line">                        int n = (sc &gt; 0) ? sc : DEFAULT_CAPACITY;</span><br><span class="line">                        @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">                        Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n];</span><br><span class="line">                        table = tab = nt;</span><br><span class="line">                        //sc为n的3/4</span><br><span class="line">                        sc = n - (n &gt;&gt;&gt; 2);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; finally &#123;</span><br><span class="line">                    //sizeCtl为table长度的3/4</span><br><span class="line">                    sizeCtl = sc;</span><br><span class="line">                &#125;</span><br><span class="line">                break;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return tab;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="treeifyBin"><a href="#treeifyBin" class="headerlink" title="treeifyBin"></a>treeifyBin</h1><p>在链表的长度达到临界值后，会调用这个方法将链表转成红黑树，但是，<strong>注意：这个方法并不一定会将链表转为红黑树，只有在数组长度大于等于64的时候才会转</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">private final void treeifyBin(Node&lt;K,V&gt;[] tab, int index) &#123;</span><br><span class="line">        Node&lt;K,V&gt; b; int n, sc;</span><br><span class="line">        if (tab != null) &#123;</span><br><span class="line">            //如果tab长度小于64，则扩容</span><br><span class="line">            if ((n = tab.length) &lt; MIN_TREEIFY_CAPACITY)</span><br><span class="line">                tryPresize(n &lt;&lt; 1);</span><br><span class="line">            //获取头结点</span><br><span class="line">            else if ((b = tabAt(tab, index)) != null &amp;&amp; b.hash &gt;= 0) &#123;</span><br><span class="line">                synchronized (b) &#123;</span><br><span class="line">                    if (tabAt(tab, index) == b) &#123;</span><br><span class="line">                        TreeNode&lt;K,V&gt; hd = null, tl = null;</span><br><span class="line">                        //遍历链表，建立红黑树</span><br><span class="line">                        for (Node&lt;K,V&gt; e = b; e != null; e = e.next) &#123;</span><br><span class="line">                            TreeNode&lt;K,V&gt; p =</span><br><span class="line">                                new TreeNode&lt;K,V&gt;(e.hash, e.key, e.val, null, null);</span><br><span class="line">                            if ((p.prev = tl) == null)</span><br><span class="line">                                hd = p;</span><br><span class="line">                            else</span><br><span class="line">                                tl.next = p;</span><br><span class="line">                            tl = p;</span><br><span class="line">                        &#125;</span><br><span class="line">                        //将建好的红黑树设置到数组的对应位置中</span><br><span class="line">                        setTabAt(tab, index, new TreeBin&lt;K,V&gt;(hd));</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="tryPresize"><a href="#tryPresize" class="headerlink" title="tryPresize"></a>tryPresize</h1><p><strong>传进来的参数size已经做过翻倍了</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private final void tryPresize(int size) &#123;</span><br><span class="line">        int c = (size &gt;= (MAXIMUM_CAPACITY &gt;&gt;&gt; 1)) ? MAXIMUM_CAPACITY :</span><br><span class="line">            tableSizeFor(size + (size &gt;&gt;&gt; 1) + 1);</span><br><span class="line">        int sc;</span><br><span class="line">        while ((sc = sizeCtl) &gt;= 0) &#123;</span><br><span class="line">            Node&lt;K,V&gt;[] tab = table; int n;</span><br><span class="line">            if (tab == null || (n = tab.length) == 0) &#123;</span><br><span class="line">                n = (sc &gt; c) ? sc : c;</span><br><span class="line">                if (U.compareAndSwapInt(this, SIZECTL, sc, -1)) &#123;</span><br><span class="line">                    try &#123;</span><br><span class="line">                        if (table == tab) &#123;</span><br><span class="line">                            @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">                            Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n];</span><br><span class="line">                            table = nt;</span><br><span class="line">                            sc = n - (n &gt;&gt;&gt; 2);</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125; finally &#123;</span><br><span class="line">                        sizeCtl = sc;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            else if (c &lt;= sc || n &gt;= MAXIMUM_CAPACITY)</span><br><span class="line">                break;</span><br><span class="line">            else if (tab == table) &#123;</span><br><span class="line">                //返回与扩容有关的一个生成戳rs，每次新的扩容，都有一个不同的length，这个生成戳就是根据length来计算出来的一个数字，length不同，这个数字也不同</span><br><span class="line">                int rs = resizeStamp(n);</span><br><span class="line">                if (sc &lt; 0) &#123;// sc &lt; 0 表明此时有别的线程正在进行扩容</span><br><span class="line">                    Node&lt;K,V&gt;[] nt;</span><br><span class="line">                    if ((sc &gt;&gt;&gt; RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||</span><br><span class="line">                        sc == rs + MAX_RESIZERS || (nt = nextTable) == null ||</span><br><span class="line">                        transferIndex &lt;= 0)</span><br><span class="line">                        break;</span><br><span class="line">                    //// 尝试扩容，把正在执行transfer任务的线程数加1</span><br><span class="line">                    if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1))</span><br><span class="line">                        transfer(tab, nt);</span><br><span class="line">                &#125;</span><br><span class="line">                //成为第一个扩容的线程</span><br><span class="line">                else if (U.compareAndSwapInt(this, SIZECTL, sc,(rs &lt;&lt; RESIZE_STAMP_SHIFT) + 2))</span><br><span class="line">                    transfer(tab, null);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="helpTransfer"><a href="#helpTransfer" class="headerlink" title="helpTransfer"></a>helpTransfer</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">final Node&lt;K,V&gt;[] helpTransfer(Node&lt;K,V&gt;[] tab, Node&lt;K,V&gt; f) &#123;</span><br><span class="line">        Node&lt;K,V&gt;[] nextTab; int sc;</span><br><span class="line">        if (tab != null &amp;&amp; (f instanceof ForwardingNode) &amp;&amp;</span><br><span class="line">            (nextTab = ((ForwardingNode&lt;K,V&gt;)f).nextTable) != null) &#123;</span><br><span class="line">            //返回与扩容有关的一个生成戳rs，每次新的扩容，都有一个不同的length，这个生成戳就是根据length来计算出来的一个数字，length不同，这个数字也不同</span><br><span class="line">            int rs = resizeStamp(tab.length);</span><br><span class="line">            while (nextTab == nextTable &amp;&amp; table == tab &amp;&amp; (sc = sizeCtl) &lt; 0) &#123;</span><br><span class="line">                //不需要帮助转移（这么判断的依据是什么，不是很清楚，有哪位大佬知道可以留言指点一下）</span><br><span class="line">                if ((sc &gt;&gt;&gt; RESIZE_STAMP_SHIFT) != rs || sc == rs + 1 ||</span><br><span class="line">                    sc == rs + MAX_RESIZERS || transferIndex &lt;= 0)</span><br><span class="line">                    break;</span><br><span class="line">                ////每当一个线程来帮助扩容，SIZECTL就+1</span><br><span class="line">                if (U.compareAndSwapInt(this, SIZECTL, sc, sc + 1)) &#123;</span><br><span class="line">                    transfer(tab, nextTab);</span><br><span class="line">                    break;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            return nextTab;</span><br><span class="line">        &#125;</span><br><span class="line">        return table;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h1 id="transfer"><a href="#transfer" class="headerlink" title="transfer"></a>transfer</h1><p>这个方法的作用就是将tab数组的元素迁移到nextTab数组中。这个方法支持多线程调用，第一个线程调用的时候nextTab为null，以后的线程调用时，nextTab将不为null。<br>要迁移的数组tab长度为n，那么我们有n个数据要迁移，这里让每个线程负责一部分数据的迁移，每做完一个任务就检测一下是否还有其它任务没有完成，如果有就继续迁移。这里会将n个数据分成多个任务，每个任务的大小用stride表示，可以简单的理解为步长。<br>当地一个线程开始数据迁移时，会将transferIndex指向原数组的最后一位，从后往前的stride个数据属于第一个线程，然后将transferIndex指向新的位置，再往前的stride个数据属于第二个线程，依次类推。当然，这里说的第二个线程不是真的一定指代了第二个线程，也可以是同一个线程。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br></pre></td><td class="code"><pre><span class="line">private final void transfer(Node&lt;K,V&gt;[] tab, Node&lt;K,V&gt;[] nextTab) &#123;</span><br><span class="line">        int n = tab.length, stride;</span><br><span class="line">        //stride在单核下直接等于 n，多核模式下为 (n&gt;&gt;&gt;3)/NCPU，最小值是 16</span><br><span class="line">        //主要是判断CPU处理的量，如果小于16则直接赋值16（可以理解为数据迁移时的步长）</span><br><span class="line">        if ((stride = (NCPU &gt; 1) ? (n &gt;&gt;&gt; 3) / NCPU : n) &lt; MIN_TRANSFER_STRIDE)</span><br><span class="line">            stride = MIN_TRANSFER_STRIDE; // subdivide range</span><br><span class="line">        //initiating只能有一个线程进行构造nextTable，如果别的线程进入发现不为空就不用构造nextTable了</span><br><span class="line">        if (nextTab == null) &#123;</span><br><span class="line">            try &#123;</span><br><span class="line">                @SuppressWarnings(&quot;unchecked&quot;)</span><br><span class="line">                //把新的数组变为原来数组的两倍</span><br><span class="line">                //n&lt;&lt;1表示向左移一位，等价于2*n</span><br><span class="line">                Node&lt;K,V&gt;[] nt = (Node&lt;K,V&gt;[])new Node&lt;?,?&gt;[n &lt;&lt; 1];</span><br><span class="line">                nextTab = nt;</span><br><span class="line">            &#125; catch (Throwable ex) &#123;      // try to cope with OOME</span><br><span class="line">                sizeCtl = Integer.MAX_VALUE;</span><br><span class="line">                return;</span><br><span class="line">            &#125;</span><br><span class="line">            nextTable = nextTab;</span><br><span class="line">            //初始为table的最后一个索引</span><br><span class="line">            transferIndex = n;</span><br><span class="line">        &#125;</span><br><span class="line">        int nextn = nextTab.length;</span><br><span class="line">        //初始化ForwardingNode节点,持有nextTab的引用,在处理完每个节点之后当做占位节点，表示该槽位已经处理过了</span><br><span class="line">        ForwardingNode&lt;K,V&gt; fwd = new ForwardingNode&lt;K,V&gt;(nextTab);</span><br><span class="line">        boolean advance = true;</span><br><span class="line">        //本线程是否完成</span><br><span class="line">        boolean finishing = false;</span><br><span class="line">        for (int i = 0, bound = 0;;) &#123;</span><br><span class="line">            Node&lt;K,V&gt; f; int fh;</span><br><span class="line">            while (advance) &#123;</span><br><span class="line">                int nextIndex, nextBound;</span><br><span class="line">                if (--i &gt;= bound || finishing)</span><br><span class="line">                    advance = false;</span><br><span class="line">                //transferIndex小于等于0，则原数组的所有数据都有线程去处理了</span><br><span class="line">                else if ((nextIndex = transferIndex) &lt;= 0) &#123;</span><br><span class="line">                    i = -1;</span><br><span class="line">                    advance = false;</span><br><span class="line">                &#125;</span><br><span class="line">                //判断一下剩下的数据是不是够一个stride，给bound赋值</span><br><span class="line">                else if (U.compareAndSwapInt</span><br><span class="line">                         (this, TRANSFERINDEX, nextIndex,</span><br><span class="line">                          nextBound = (nextIndex &gt; stride ? nextIndex - stride : 0))) &#123;</span><br><span class="line">                    bound = nextBound;</span><br><span class="line">                    i = nextIndex - 1;</span><br><span class="line">                    advance = false;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            if (i &lt; 0 || i &gt;= n || i + n &gt;= nextn) &#123;</span><br><span class="line">                int sc;</span><br><span class="line">                //迁移操作已经完成</span><br><span class="line">                if (finishing) &#123;</span><br><span class="line">                    nextTable = null;</span><br><span class="line">                    //将新的nextTab赋值给table，完成迁移</span><br><span class="line">                    table = nextTab;</span><br><span class="line">                    //重新计算sizeCtl，n是原来数字的长度</span><br><span class="line">                    sizeCtl = (n &lt;&lt; 1) - (n &gt;&gt;&gt; 1);</span><br><span class="line">                    return;</span><br><span class="line">                &#125;</span><br><span class="line">                //把正在执行扩容的线程数减1，表明自己要退出扩容</span><br><span class="line">                if (U.compareAndSwapInt(this, SIZECTL, sc = sizeCtl, sc - 1)) &#123;</span><br><span class="line">                    // 判断下自己是不是本轮扩容中的最后一个线程，如果不是，则直接退出</span><br><span class="line">                    if ((sc - 2) != resizeStamp(n) &lt;&lt; RESIZE_STAMP_SHIFT)</span><br><span class="line">                        return;</span><br><span class="line">                    //如果是最后一个线程，进行收尾</span><br><span class="line">                    finishing = advance = true;</span><br><span class="line">                    i = n; // recheck before commit</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            //如果位置i是空的，没有任何节点，那么放入ForwardingNode空节点</span><br><span class="line">            else if ((f = tabAt(tab, i)) == null)</span><br><span class="line">                advance = casTabAt(tab, i, null, fwd);</span><br><span class="line">            //被迁移过</span><br><span class="line">            else if ((fh = f.hash) == MOVED)</span><br><span class="line">                advance = true; // already processed</span><br><span class="line">            else &#123;</span><br><span class="line">                //下面的代码主要是重新计算位置，会将一个链表拆分为两个</span><br><span class="line">                //头结点加锁</span><br><span class="line">                synchronized (f) &#123;</span><br><span class="line">                    if (tabAt(tab, i) == f) &#123;</span><br><span class="line">                        Node&lt;K,V&gt; ln, hn;</span><br><span class="line">                        if (fh &gt;= 0) &#123;</span><br><span class="line">                            //主要作用是把链表分为两类，最高位为0或1</span><br><span class="line">                            //这里后面会专门介绍一下</span><br><span class="line">                            int runBit = fh &amp; n;</span><br><span class="line">                            Node&lt;K,V&gt; lastRun = f;</span><br><span class="line">                            //尽量重用Node链表尾部的一部分（起码能重用一个，实际情况下能重用比较多的节点，这时候就提高了效率）</span><br><span class="line">                            for (Node&lt;K,V&gt; p = f.next; p != null; p = p.next) &#123;</span><br><span class="line">                                int b = p.hash &amp; n;</span><br><span class="line">                                if (b != runBit) &#123;</span><br><span class="line">                                    runBit = b;</span><br><span class="line">                                    lastRun = p;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                            if (runBit == 0) &#123;</span><br><span class="line">                                ln = lastRun;</span><br><span class="line">                                hn = null;</span><br><span class="line">                            &#125;</span><br><span class="line">                            else &#123;</span><br><span class="line">                                hn = lastRun;</span><br><span class="line">                                ln = null;</span><br><span class="line">                            &#125;</span><br><span class="line">                            for (Node&lt;K,V&gt; p = f; p != lastRun; p = p.next) &#123;</span><br><span class="line">                                int ph = p.hash; K pk = p.key; V pv = p.val;</span><br><span class="line">                                //构建低位链表</span><br><span class="line">                                if ((ph &amp; n) == 0)</span><br><span class="line">                                    ln = new Node&lt;K,V&gt;(ph, pk, pv, ln);</span><br><span class="line">                                else ////构建高位链表</span><br><span class="line">                                    hn = new Node&lt;K,V&gt;(ph, pk, pv, hn);</span><br><span class="line">                            &#125;</span><br><span class="line">                            //其中的一个链表放在新数组的位置 i</span><br><span class="line">                            setTabAt(nextTab, i, ln);</span><br><span class="line">                            //另一个链表放在新数组的位置 i+n</span><br><span class="line">                            setTabAt(nextTab, i + n, hn);</span><br><span class="line">                            //将原数组该位置处设置为 fwd，代表该位置已经处理完毕，</span><br><span class="line">                            //其他线程一旦看到该位置的 hash 值为 MOVED，就不会进行迁移了</span><br><span class="line">                            setTabAt(tab, i, fwd);</span><br><span class="line">                            advance = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                        else if (f instanceof TreeBin) &#123;</span><br><span class="line">                            TreeBin&lt;K,V&gt; t = (TreeBin&lt;K,V&gt;)f;</span><br><span class="line">                            TreeNode&lt;K,V&gt; lo = null, loTail = null;</span><br><span class="line">                            TreeNode&lt;K,V&gt; hi = null, hiTail = null;</span><br><span class="line">                            int lc = 0, hc = 0;</span><br><span class="line">                            //红黑树的迁移</span><br><span class="line">                            for (Node&lt;K,V&gt; e = t.first; e != null; e = e.next) &#123;</span><br><span class="line">                                int h = e.hash;</span><br><span class="line">                                TreeNode&lt;K,V&gt; p = new TreeNode&lt;K,V&gt;</span><br><span class="line">                                    (h, e.key, e.val, null, null);</span><br><span class="line">                                if ((h &amp; n) == 0) &#123;</span><br><span class="line">                                    if ((p.prev = loTail) == null)</span><br><span class="line">                                        lo = p;</span><br><span class="line">                                    else</span><br><span class="line">                                        loTail.next = p;</span><br><span class="line">                                    loTail = p;</span><br><span class="line">                                    ++lc;</span><br><span class="line">                                &#125;</span><br><span class="line">                                else &#123;</span><br><span class="line">                                    if ((p.prev = hiTail) == null)</span><br><span class="line">                                        hi = p;</span><br><span class="line">                                    else</span><br><span class="line">                                        hiTail.next = p;</span><br><span class="line">                                    hiTail = p;</span><br><span class="line">                                    ++hc;</span><br><span class="line">                                &#125;</span><br><span class="line">                            &#125;</span><br><span class="line">                            //将红黑树一分为二后，如果节点数小于UNTREEIFY_THRESHOLD这里为8，那么就把它转为链表</span><br><span class="line">                            ln = (lc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(lo) :</span><br><span class="line">                                (hc != 0) ? new TreeBin&lt;K,V&gt;(lo) : t;</span><br><span class="line">                            hn = (hc &lt;= UNTREEIFY_THRESHOLD) ? untreeify(hi) :</span><br><span class="line">                                (lc != 0) ? new TreeBin&lt;K,V&gt;(hi) : t;</span><br><span class="line">                            setTabAt(nextTab, i, ln);</span><br><span class="line">                            setTabAt(nextTab, i + n, hn);</span><br><span class="line">                            setTabAt(tab, i, fwd);</span><br><span class="line">                            advance = true;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
+<p>我们把下面这段代码单独拿出来看一下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">for (Node&lt;K,V&gt; p = f.next; p != null; p = p.next) &#123;</span><br><span class="line">    int b = p.hash &amp; n;</span><br><span class="line">    if (b != runBit) &#123;</span><br><span class="line">        runBit = b;</span><br><span class="line">        lastRun = p;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>假如要操作的列表如下图</p>
+<p><img src="https://note.youdao.com/yws/api/personal/file/7FBDD2BE8915442E820EE3034F75FAE1?method=download&amp;shareKey=1ce2d26e43c48c9a814d23fcde6d8abc" alt="image"></p>
+<p>那么经过上面的代码最终lastRun为6号节点，这里就体现了重用，6号节点后面的都可以重用。我们假设蓝色节点fn&amp;n为0，那么hn为节点6，ln为null。<br>最后再次循环，构造两条列表5-&gt;2-&gt;1和3-&gt;4-&gt;6-&gt;7-&gt;8。</p>
+<p>我们回过头再来看一下fn&amp;n，为什么它的值为0就是放在原来的位置，值为非0就放在n+i的位置。<br>要搞清楚这个，就要先从putVal方法说起<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">else if ((f = tabAt(tab, i = (n - 1) &amp; hash)) == null) &#123;</span><br><span class="line">                if (casTabAt(tab, i, null,</span><br><span class="line">                             new Node&lt;K,V&gt;(hash, key, value, null)))</span><br><span class="line">                    break;                   // no lock when adding to empty bin</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure></p>
+<p>在putVal方法中获取对象的下标是通过(n - 1) &amp; hash计算出来的，这里的n就是数组的长度length，(n-1)&amp;hash的结果相当于hash%n，但是效率比%更高。<br><strong>那么(n-1)&amp;hash跟hash&amp;n有什么联系呢</strong>，因为我们在上面看到两个数组的位置是根据hash&amp;n的值来决定的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">假设table的长度为16，二进制表示是10000，n-1是01111。</span><br><span class="line">我们先找一个n&amp;hash为0的hash值</span><br><span class="line">00010000                                 00001111</span><br><span class="line">01101000 //hash&amp;n为0                     01101000 //(n-1)&amp;hash为8，也就是算出来的下标为8</span><br><span class="line">在找一个hash&amp;n为1的hash值</span><br><span class="line">00010000                                 00001111</span><br><span class="line">01010001 //非0                           01010001 //(n-1)&amp;hash为1，也就是算出来的下标为1</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">然后我们看扩容后的情况，扩容后，table的长度为32，二进制表示100000，n-1是011111</span><br><span class="line">我们看hash为01101000的情况(扩容前n&amp;hash为0)</span><br><span class="line">00011111</span><br><span class="line">01101000 //(n-1)&amp;hash依然为8，也就是说它在table中所属的下标位置没有变化</span><br><span class="line">再来看hash为01010001(扩容前n&amp;hash为非0)</span><br><span class="line">00011111</span><br><span class="line">01010001 //(n-1)&amp;hash为17,正好是n+1的值(n为table长度16)</span><br></pre></td></tr></table></figure></p>
+<h1 id="get"><a href="#get" class="headerlink" title="get"></a>get</h1><p>get方法的大体流程是这样的<br>计算 hash 值<br>根据 hash 值找到数组对应位置: (n – 1) &amp; h<br>根据该位置处结点性质进行相应查找<br>如果该位置为 null，那么直接返回 null 就可以了<br>如果该位置处的节点刚好就是我们需要的，返回该节点的值即可<br>如果该位置节点的 hash 值小于 0，说明正在扩容，或者是红黑树，调用find方法查找<br>如果以上 3 条都不满足，那就是链表，进行遍历比对即可</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>看完源码其实还有很多疑惑的地方，看源码的过程也是查资料，扩展自己知识的过程，选择写下来也是为了加深印象。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ConcurrentHashMap/" rel="tag"># ConcurrentHashMap</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/10/11/HashMap原理及源码解析/" rel="next" title="HashMap原理及源码解析">
+                <i class="fa fa-chevron-left"></i> HashMap原理及源码解析
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">爱吃墨鱼</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives">
+              
+                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基本结构"><span class="nav-number">1.</span> <span class="nav-text">基本结构</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#基本字段"><span class="nav-number">2.</span> <span class="nav-text">基本字段</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#ForwardingNode"><span class="nav-number">3.</span> <span class="nav-text">ForwardingNode</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化"><span class="nav-number">4.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#put方法详解"><span class="nav-number">5.</span> <span class="nav-text">put方法详解</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#初始化表initTable"><span class="nav-number">6.</span> <span class="nav-text">初始化表initTable</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#treeifyBin"><span class="nav-number">7.</span> <span class="nav-text">treeifyBin</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#tryPresize"><span class="nav-number">8.</span> <span class="nav-text">tryPresize</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#helpTransfer"><span class="nav-number">9.</span> <span class="nav-text">helpTransfer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#transfer"><span class="nav-number">10.</span> <span class="nav-text">transfer</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#get"><span class="nav-number">11.</span> <span class="nav-text">get</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">12.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">爱吃墨鱼</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: '7tB0ELeQw7w3NpOlGDWaDGeQ-gzGzoHsz',
+        appKey: 'eTpByNnYo8gFKWAB7qHCNj0v',
+        placeholder: '说点什么吧',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'5' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+
+
+  
+
+  
+
+</body>
+</html>
